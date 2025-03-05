@@ -1,11 +1,20 @@
 const express = require('express'); // Importing Express
 const mongoose = require('mongoose'); // Importing Mongoose
 require('dotenv').config(); // Load environment variables from a .env file
+const cors = require('cors'); // Import CORS for handling cross-origin requests
 const AuthUser = require('./models/AuthUser'); // Import the AuthUser model
 const User = require('./models/User'); // Import the User model
 
 // Initialize Express app
 const app = express();
+
+// CORS configuration
+const corsOptions = {
+  origin: 'http://localhost:3000', // Only allow frontend requests from localhost:3000
+  methods: ['GET', 'POST'],
+};
+
+app.use(cors(corsOptions)); // Use CORS middleware with the defined options
 
 // Middleware to parse JSON requests
 app.use(express.json());
@@ -14,10 +23,7 @@ app.use(express.json());
 const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://gauxii:gauri071016@cluster0.qynps.mongodb.net/ClearZone?retryWrites=true&w=majority';
 
 // Connect to MongoDB Atlas
-mongoose.connect(MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect(MONGO_URI)
   .then(() => console.log('Connected to MongoDB Atlas'))
   .catch((err) => console.error('Could not connect to MongoDB Atlas', err));
 
