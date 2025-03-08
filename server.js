@@ -1,76 +1,31 @@
-const express = require('express'); // Importing Express
-const mongoose = require('mongoose'); // Importing Mongoose
-require('dotenv').config(); // Load environment variables from a .env file
-const cors = require('cors'); // Import CORS for handling cross-origin requests
-const AuthUser = require('./models/AuthUser'); // Import the AuthUser model
-const User = require('./models/User'); // Import the User model
+require('dotenv').config(); // ✅ Load environment variables
 
-// Initialize Express app
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+
+const authRoutes = require('./routes/authRoutes'); // Import authentication routes
+const wasteRoutes = require("./routes/wasteReports"); // Import waste routes
+
 const app = express();
 
-// CORS configuration
-const corsOptions = {
-  origin: 'http://localhost:3000', // Only allow frontend requests from localhost:3000
-  methods: ['GET', 'POST'],
-};
-
-app.use(cors(corsOptions)); // Use CORS middleware with the defined options
-
-// Middleware to parse JSON requests
+// ✅ Middleware
+app.use(cors({ origin: 'http://localhost:3000', methods: ['GET', 'POST'] }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// MongoDB Atlas connection string from the environment variable
-const MONGO_URI = process.env.MONGO_URI || 'mongodb+srv://gauxii:gauri071016@cluster0.qynps.mongodb.net/ClearZone?retryWrites=true&w=majority';
+// ✅ Connect to MongoDB Atlas
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('✅ Connected to MongoDB Atlas'))
+  .catch((err) => console.error('❌ Could not connect to MongoDB Atlas', err));
 
-// Connect to MongoDB Atlas
-mongoose.connect(MONGO_URI)
-  .then(() => console.log('Connected to MongoDB Atlas'))
-  .catch((err) => console.error('Could not connect to MongoDB Atlas', err));
+// ✅ API Routes
+app.use("/api/auth", authRoutes);
+app.use("/api/waste", wasteRoutes);
 
-// Route to create a new authentication user (sign-up)
-app.post('/auth/signup', async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    // Check if the user already exists
-    const userExists = await AuthUser.findOne({ email });
-    if (userExists) {
-      return res.status(400).json({ error: 'User already exists' });
-    }
-
-    const authUser = new AuthUser({ email, password });
-    await authUser.save();
-    res.status(201).json({ message: 'User created successfully' });
-  } catch (err) {
-    res.status(400).json({ error: 'Error creating user', details: err });
-  }
-});
-
-// Route to authenticate user (login)
-app.post('/auth/login', async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    const authUser = await AuthUser.findOne({ email });
-    if (!authUser) {
-      return res.status(400).json({ error: 'Invalid credentials' });
-    }
-
-    const isMatch = await authUser.matchPassword(password);
-    if (!isMatch) {
-      return res.status(400).json({ error: 'Invalid credentials' });
-    }
-
-    res.status(200).json({ message: 'Login successful' });
-  } catch (err) {
-    res.status(400).json({ error: 'Error logging in', details: err });
-  }
-});
-
-// Define a port
+// ✅ Start the Server
 const PORT = process.env.PORT || 5002;
 
-// Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`🚀 Server is running on port ${PORT}`);
 });
