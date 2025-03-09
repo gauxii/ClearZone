@@ -30,7 +30,7 @@ function LoginPage() {
 
       if (response.ok) {
         localStorage.setItem("token", data.token);
-
+        console.log(data.token)
         // Redirect based on role
         const redirectPath =
           role === "user"
@@ -92,8 +92,18 @@ function LoginPage() {
           {/* Error Message */}
           {errorMessage && <div className="error-message">{errorMessage}</div>}
 
-          {/* Submit Button */}
-          <button type="submit" className="login-button">Login</button>
+          {/* Buttons (Login + Sign Up) */}
+          <div className="button-group">
+            <button type="submit" className="login-button">Login</button>
+            <button 
+              type="button" 
+              className="signup-button" 
+              onClick={() => navigate("/signup")}  // Change to lowercase
+            >
+              Sign Up
+            </button>
+
+          </div>
         </form>
       </div>
     </div>
@@ -101,4 +111,3 @@ function LoginPage() {
 }
 
 export default LoginPage;
-

@@ -12,6 +12,10 @@ const AdminSchema = new mongoose.Schema({
       message: props => `${props.value} is not a valid Admin ID. It should start with 'ADMIN' followed by numbers.`
     }
   },
+  name: {
+    type: String,
+    required: true
+  },
   password: {
     type: String,
     required: true

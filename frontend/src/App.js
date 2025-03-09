@@ -6,6 +6,8 @@ import WorkerDashboard from "./components/WorkerDashboard";
 import WorkerUpload from "./components/WorkerUpload";
 import AdminDashboard from "./components/AdminDashboard";
 import AdminRecycling from "./components/AdminRecycling";
+import SignupPage from "./components/SignupPage";
+
 
 function App() {
   return (
@@ -18,6 +20,7 @@ function App() {
           <Route path="/worker-upload" element={<WorkerUpload />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/admin-recycling" element={<AdminRecycling />} />
+          <Route path="/signup" element={<SignupPage />} />
         </Routes>
       </div>
     </Router>

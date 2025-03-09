@@ -7,6 +7,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  background-color: #1a1a1a; /* Dark theme */
 }
 
 h2 {
@@ -14,7 +15,11 @@ h2 {
   margin-bottom: 20px;
 }
 
-.upload-section, .reward-section, .feedback-section, .leaderboard-section {
+.upload-section, 
+.reward-section, 
+.feedback-section, 
+.leaderboard-section,
+.latest-reports { /* ✅ Added Latest Submissions Section */
   background-color: rgba(0, 0, 0, 0.7);
   padding: 20px;
   margin: 15px 0;
@@ -59,6 +64,7 @@ button:hover {
   width: 300px;
   height: 200px;
   border: 2px solid #ccc;
+  border-radius: 8px;
 }
 
 textarea, input, select {
@@ -67,6 +73,8 @@ textarea, input, select {
   margin-bottom: 15px;
   border-radius: 5px;
   border: 1px solid #ccc;
+  background-color: #2a2a2a;
+  color: white;
 }
 
 .rewards ul {
@@ -96,12 +104,39 @@ textarea, input, select {
   color: #FFD700; /* Gold color for selected stars */
 }
 
+/* ✅ Image Preview Styling */
 .image-preview img {
   max-width: 100%;
   border-radius: 8px;
   margin-top: 20px;
+  border: 2px solid #4CAF50;
 }
 
+/* ✅ Latest Submissions List */
+.latest-reports ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.latest-reports li {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 5px;
+  color: white;
+  border-left: 5px solid #4CAF50;
+}
+
+/* ✅ Reported Image Styling */
+.report-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 10px;
+  border: 2px solid #ccc;
+}
+
+/* ✅ Leaderboard Section */
 .leaderboard-section ul {
   list-style-type: none;
   padding: 0;
@@ -113,4 +148,5 @@ textarea, input, select {
   margin: 5px 0;
   border-radius: 5px;
   color: white;
+  border-left: 5px solid #FFD700;
 }

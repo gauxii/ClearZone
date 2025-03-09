@@ -9,6 +9,7 @@ const WasteReportSchema = new mongoose.Schema({
     longitude: { type: Number, required: true }
   },
   status: { type: String, enum: ['pending', 'in progress', 'resolved'], default: 'pending' },
+  assigned: { type: String, default: 'none' }, // New field to track assigned workers (default: none)
   createdAt: { type: Date, default: Date.now }
 });
 

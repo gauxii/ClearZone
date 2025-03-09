@@ -1,27 +1,34 @@
 import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
 import "./CitizenDashboard.css";
 
 function CitizenDashboard() {
   const [image, setImage] = useState(null);
   const [location, setLocation] = useState(null);
+  const [description, setDescription] = useState("");
   const [points, setPoints] = useState(0);
-  const [rewards, setRewards] = useState([]);
-  const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState('');
-  const [leaderboard, setLeaderboard] = useState([
-    { name: "John", points: 250 },
-    { name: "Alice", points: 200 },
-    { name: "Bob", points: 150 }
-  ]);
-  const [recyclableMaterial, setRecyclableMaterial] = useState({
-    materialType: "",
-    quantity: "",
-    description: ""
-  });
-
+  const [reports, setReports] = useState([]); // Stores latest submissions
   const videoRef = useRef(null);
 
-  // Camera Access
+  // ✅ Fetch Latest Submissions
+  useEffect(() => {
+    fetchReports();
+  }, []);
+
+  const fetchReports = async () => {
+    try {
+      const response = await axios.get("http://localhost:5002/api/waste/my-reports", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      setReports(response.data);
+    } catch (error) {
+      console.error("Error fetching reports:", error);
+    }
+  };
+
+  // ✅ Camera Access
   useEffect(() => {
     navigator.mediaDevices.getUserMedia({ video: true })
       .then((stream) => {
@@ -30,17 +37,9 @@ function CitizenDashboard() {
       .catch((error) => {
         console.error("Error accessing camera:", error);
       });
-
-    return () => {
-      const stream = videoRef.current?.srcObject;
-      if (stream) {
-        const tracks = stream.getTracks();
-        tracks.forEach(track => track.stop());
-      }
-    };
   }, []);
 
-  // Geolocation Access
+  // ✅ Geolocation Access
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -57,7 +56,7 @@ function CitizenDashboard() {
     }
   }, []);
 
-  // Capture Image from Video Feed
+  // ✅ Capture Image from Camera
   const captureImage = () => {
     const canvas = document.createElement("canvas");
     const video = videoRef.current;
@@ -67,150 +66,102 @@ function CitizenDashboard() {
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     const imageUrl = canvas.toDataURL("image/png");
     setImage(imageUrl);
-    alert("Waste Reported! Notification sent to Admin and Workers.");
   };
 
-  // Submit Feedback
-  const handleSubmitFeedback = () => {
-    alert(`Feedback submitted: Rating: ${rating}, Comment: ${comment}`);
-  };
-
-  // Submit New Report and Award Points
-  const handleNewReport = () => {
-    setPoints(points + 10); // 10 points for each new report
-    if (points + 10 >= 100) {
-      setRewards([...rewards, "Free T-shirt for reporting 10 times!"]);
+  // ✅ Submit Waste Report
+  const handleSubmitReport = async () => {
+    if (!image || !location || !description) {
+      alert("Please provide an image (captured or uploaded), description, and allow location access.");
+      return;
     }
-    alert(`Report submitted! You earned 10 points.`);
+
+    const formData = new FormData();
+    formData.append("image", dataURItoBlob(image), "waste.png");
+    formData.append("description", description);
+    formData.append("latitude", location.latitude);
+    formData.append("longitude", location.longitude);
+
+    try {
+      await axios.post("http://localhost:5002/api/waste/report", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        },
+      });
+
+      alert("Waste reported successfully!");
+      fetchReports(); // Refresh latest reports
+      setDescription(""); // Clear input field
+      setImage(null); // Reset image
+    } catch (error) {
+      console.error("Error submitting report:", error);
+      alert("Failed to report waste. Please try again.");
+    }
   };
 
-  // Handle recyclable material input change
-  const handleRecyclableMaterialChange = (e) => {
-    const { name, value } = e.target;
-    setRecyclableMaterial((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-  };
+  // ✅ Convert Data URL to Blob
+  function dataURItoBlob(dataURI) {
+    const byteString = atob(dataURI.split(",")[1]);
+    const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], { type: mimeString });
+  }
 
   return (
     <div className="dashboard-container">
       <h2>Citizen Waste Reporting Dashboard</h2>
 
+      {/* ✅ Report Waste Section */}
       <div className="upload-section">
         <h3>Report Waste</h3>
+        {location && <p>📍 Your Location: {location.latitude}, {location.longitude}</p>}
 
-        {location && (
-          <p>📍 Your Location: {location.latitude}, {location.longitude}</p>
-        )}
+        <textarea
+          placeholder="Describe the waste location..."
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
 
-        {/* Camera-based Reporting */}
         <div className="camera-section">
           <video ref={videoRef} autoPlay playsInline className="video-feed" />
           <button onClick={captureImage}>Capture Waste Image</button>
         </div>
 
-        {/* Recyclable Material Reporting */}
-        <div className="recyclable-material-section">
-          <h4>Recyclable Material Information</h4>
-          <label>
-            Material Type:
-            <select
-              name="materialType"
-              value={recyclableMaterial.materialType}
-              onChange={handleRecyclableMaterialChange}
-            >
-              <option value="">Select Material</option>
-              <option value="plastic">Plastic</option>
-              <option value="paper">Paper</option>
-              <option value="metal">Metal</option>
-              <option value="glass">Glass</option>
-              <option value="other">Other</option>
-            </select>
-          </label>
+        {image && <img src={image} alt="Captured Waste" className="image-preview" />}
 
-          <label>
-            Quantity (in kg):
-            <input
-              type="number"
-              name="quantity"
-              value={recyclableMaterial.quantity}
-              onChange={handleRecyclableMaterialChange}
-              placeholder="e.g. 5"
-            />
-          </label>
+        <button onClick={handleSubmitReport}>Submit Waste Report</button>
+      </div>
 
-          <label>
-            Additional Description:
-            <textarea
-              name="description"
-              value={recyclableMaterial.description}
-              onChange={handleRecyclableMaterialChange}
-              placeholder="Describe the recyclable material"
-            />
-          </label>
-        </div>
-
-        {/* Submit Report */}
-        <button onClick={handleNewReport}>Submit Waste Report</button>
+      {/* ✅ Latest Waste Reports Section */}
+      <div className="latest-reports">
+        <h3>Latest Submissions</h3>
+        {reports.length === 0 ? (
+          <p>No reports found.</p>
+        ) : (
+          <ul>
+            {reports.map((report) => (
+              <li key={report._id} className="report-item">
+                <p><strong>Description:</strong> {report.description}</p>
+                <p><strong>Status:</strong> {report.status}</p>
+                <p><strong>Assigned To:</strong> {report.assigned || "None"}</p>
+                <p><strong>Submitted On:</strong> {new Date(report.createdAt).toLocaleString()}</p>
+                <img src={report.imageUrl} alt="Reported Waste" className="report-image" />
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       <div className="reward-section">
         <h3>Reward Points</h3>
         <p>You currently have {points} points.</p>
-        <div className="rewards">
-          <h4>Your Rewards:</h4>
-          <ul>
-            {rewards.map((reward, index) => (
-              <li key={index}>{reward}</li>
-            ))}
-          </ul>
-        </div>
       </div>
-
-      <div className="feedback-section">
-        <h3>Give Feedback on Report</h3>
-
-        <div className="rating">
-          <span>Rate your experience:</span>
-          {[1, 2, 3, 4, 5].map((star) => (
-            <button
-              key={star}
-              onClick={() => setRating(star)}
-              className={rating >= star ? 'active' : ''}
-            >
-              ☆
-            </button>
-          ))}
-        </div>
-
-        <textarea
-          placeholder="Leave a comment (optional)"
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-        />
-        <button onClick={handleSubmitFeedback}>Submit Feedback</button>
-      </div>
-
-      <div className="leaderboard-section">
-        <h3>Leaderboard</h3>
-        <ul>
-          {leaderboard.map((user, index) => (
-            <li key={index}>{user.name} - {user.points} points</li>
-          ))}
-        </ul>
-      </div>
-
-      {/* Display Captured Image */}
-      {image && (
-        <div className="image-preview">
-          <h3>Captured Image:</h3>
-          <img src={image} alt="Captured Waste" />
-        </div>
-      )}
     </div>
   );
 }
 
 export default CitizenDashboard;
-

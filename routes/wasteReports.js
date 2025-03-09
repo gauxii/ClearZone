@@ -29,17 +29,23 @@ const upload = multer({ storage });
 // ✅ Report Waste Endpoint
 router.post('/report', authMiddleware, upload.single('image'), async (req, res) => {
   try {
+    console.log("🔹 User ID from authMiddleware:", req.user);
+    console.log("🔹 Request Body:", req.body);
+    console.log("🔹 Uploaded File:", req.file);
+
     const { description, latitude, longitude } = req.body;
 
     if (!req.file) {
       return res.status(400).json({ error: 'Image upload is required' });
     }
 
+    // ✅ Create and save the waste report
     const wasteReport = new WasteReport({
       userId: req.user.id,
       description,
-      imageUrl: req.file.path, // Cloudinary URL
-      location: { latitude, longitude }
+      imageUrl: req.file.path,
+      location: { latitude, longitude },
+      assigned: 'none' // Default assigned field set to 'none'
     });
 
     await wasteReport.save();
@@ -49,14 +55,10 @@ router.post('/report', authMiddleware, upload.single('image'), async (req, res) 
     res.status(500).json({ error: 'Server Error', details: err.message });
   }
 });
-// ✅ Get All Waste Reports (For Workers)
+
+// ✅ Get All Waste Reports
 router.get('/all-reports', authMiddleware, async (req, res) => {
   try {
-    // Check if the user is a worker
-    if (!req.user.id.startsWith('EMP')) {
-      return res.status(403).json({ error: 'Access denied. Only workers can view reports.' });
-    }
-
     const reports = await WasteReport.find().populate('userId', 'email');
     res.status(200).json(reports);
   } catch (err) {
@@ -65,5 +67,18 @@ router.get('/all-reports', authMiddleware, async (req, res) => {
   }
 });
 
+// ✅ Get All Reports Submitted by Logged-in User
+router.get('/my-reports', authMiddleware, async (req, res) => {
+  try {
+    const userReports = await WasteReport.find({ userId: req.user.id })
+      .select('description imageUrl location status assigned createdAt')
+      .sort({ createdAt: -1 }); // Sort by most recent reports first
+
+    res.status(200).json(userReports);
+  } catch (err) {
+    console.error('❌ Fetch User Reports Error:', err);
+    res.status(500).json({ error: 'Server Error', details: err.message });
+  }
+});
 
 module.exports = router;

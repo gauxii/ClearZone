@@ -12,6 +12,10 @@ const WorkerSchema = new mongoose.Schema({
       message: props => `${props.value} is not a valid Employee ID. It should start with 'EMP' followed by numbers.`
     }
   },
+  name: {
+    type: String,
+    required: true
+  },
   password: {
     type: String,
     required: true

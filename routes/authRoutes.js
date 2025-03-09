@@ -7,34 +7,6 @@ const Admin = require('../models/admin');
 
 const router = express.Router();
 
-// ✅ User Signup
-// ✅ User Signup
-router.post('/signup/user', async (req, res) => {
-  const { email, password } = req.body;
-
-  try {
-    // Validate required fields
-    if (!email || !password) {
-      return res.status(400).json({ error: "Email and password are required." });
-    }
-
-    // Check if user already exists
-    const userExists = await User.findOne({ email });
-    if (userExists) return res.status(400).json({ error: 'User already exists' });
-
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Create and save new user
-    const user = new User({ email, password: hashedPassword });
-    await user.save();
-
-    res.status(201).json({ message: '✅ User created successfully' });
-  } catch (err) {
-    console.error('❌ Signup Error:', err);
-    res.status(500).json({ error: 'Server Error', details: err.message });
-  }
-});
 
 // ✅ User Login
 router.post('/login/user', async (req, res) => {
@@ -60,7 +32,7 @@ router.post('/login/user', async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
-
+    console.log("Generated JWT Token:", token);
     res.status(200).json({ message: '✅ User login successful', token });
   } catch (err) {
     console.error('❌ Login Error:', err);
@@ -70,45 +42,91 @@ router.post('/login/user', async (req, res) => {
 
 
 // ✅ Worker Signup
-router.post('/signup/worker', async (req, res) => {
-  const { employeeId, password } = req.body;
+router.post('/signup/user', async (req, res) => {
+  const { name, email, password } = req.body;
 
   try {
-    if (!/^EMP\d+$/.test(employeeId)) {
-      return res.status(400).json({ error: "Employee ID must start with 'EMP' followed by numbers." });
+    // Validate required fields
+    if (!name || !email || !password) {
+      return res.status(400).json({ error: "Name, email, and password are required." });
     }
 
-    const workerExists = await Worker.findOne({ employeeId });
-    if (workerExists) return res.status(400).json({ error: 'Worker already exists' });
+    // Check if user already exists
+    const userExists = await User.findOne({ email });
+    if (userExists) return res.status(400).json({ error: 'User already exists' });
 
+    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
-    const worker = new Worker({ employeeId, password: hashedPassword });
-    await worker.save();
 
-    res.status(201).json({ message: '✅ Worker created successfully' });
+    // Create and save new user
+    const user = new User({ name, email, password: hashedPassword });
+    await user.save();
+
+    res.status(201).json({ message: '✅ User created successfully' });
   } catch (err) {
     console.error('❌ Signup Error:', err);
     res.status(500).json({ error: 'Server Error', details: err.message });
   }
 });
 
-// ✅ Admin Signup
 router.post('/signup/admin', async (req, res) => {
-  const { adminId, password } = req.body;
+  const { name, adminId, password } = req.body;
 
   try {
+    // Validate required fields
+    if (!name || !adminId || !password) {
+      return res.status(400).json({ error: "Name, Admin ID, and Password are required." });
+    }
+
+    // Validate Admin ID format
     if (!/^ADMIN\d+$/.test(adminId)) {
       return res.status(400).json({ error: "Admin ID must start with 'ADMIN' followed by numbers." });
     }
 
+    // Check if admin already exists
     const adminExists = await Admin.findOne({ adminId });
     if (adminExists) return res.status(400).json({ error: 'Admin already exists' });
 
+    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
-    const admin = new Admin({ adminId, password: hashedPassword });
+
+    // Create and save new admin
+    const admin = new Admin({ name, adminId, password: hashedPassword });
     await admin.save();
 
     res.status(201).json({ message: '✅ Admin created successfully' });
+  } catch (err) {
+    console.error('❌ Signup Error:', err);
+    res.status(500).json({ error: 'Server Error', details: err.message });
+  }
+});
+
+router.post('/signup/worker', async (req, res) => {
+  const { name, employeeId, password } = req.body;
+
+  try {
+    // Validate required fields
+    if (!name || !employeeId || !password) {
+      return res.status(400).json({ error: "Name, Employee ID, and Password are required." });
+    }
+
+    // Validate Employee ID format
+    if (!/^EMP\d+$/.test(employeeId)) {
+      return res.status(400).json({ error: "Employee ID must start with 'EMP' followed by numbers." });
+    }
+
+    // Check if worker already exists
+    const workerExists = await Worker.findOne({ employeeId });
+    if (workerExists) return res.status(400).json({ error: 'Worker already exists' });
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create and save new worker
+    const worker = new Worker({ name, employeeId, password: hashedPassword });
+    await worker.save();
+
+    res.status(201).json({ message: '✅ Worker created successfully' });
   } catch (err) {
     console.error('❌ Signup Error:', err);
     res.status(500).json({ error: 'Server Error', details: err.message });
