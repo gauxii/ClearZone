@@ -1,5 +1,4 @@
-/* In LoginPage.css */
-/* Updated login-container for positioning form at the top */
+/* Container for full-page background */
 .login-container {
   background-size: cover;
   background-position: center;
@@ -7,97 +6,110 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Align the content to the top */
+  justify-content: center; /* Center content better */
   align-items: center;
-  padding: 20px;
+  padding: 40px 20px; /* More padding for spacing */
 }
 
-/* Form wrapper with background for better visibility */
+/* Form styling with a modern card effect */
 form {
-  background-color: rgba(255, 255, 255, 0.8); /* Added semi-transparent white background */
-  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
   padding: 30px;
   width: 100%;
-  max-width: 400px; /* Limit the form's width for better readability */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow to make the form pop */
+  max-width: 400px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
 }
 
-/* Header for sign-up page */
+/* Headings */
 h2 {
-  margin-bottom: 30px;
-  color: #333;
-  font-size: 28px;
+  margin-bottom: 25px;
+  color: #2c3e50;
+  font-size: 26px;
   font-weight: bold;
   text-align: center;
 }
 
-/* Input fields group */
+/* Input field container */
 .input-group {
-  margin-bottom: 20px; 
+  margin-bottom: 18px;
   text-align: left;
 }
 
-/* Label style */
+/* Labels */
 label {
   font-weight: bold;
   display: block;
-  margin-bottom: 8px;
-  color: #555;
+  margin-bottom: 6px;
+  color: #333;
 }
 
 /* Input fields */
-input {
+input, select {
   width: 100%;
-  padding: 12px;
+  padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 16px;
-  margin-top: 5px;
+  transition: border 0.3s ease;
+}
+
+input:focus, select:focus {
+  border-color: #28a745;
+  outline: none;
+  box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
 }
 
 /* Button styling */
 button {
   width: 100%;
-  padding: 14px;
+  padding: 12px;
   background-color: #28a745;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 18px;
+  font-weight: bold;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, transform 0.2s;
 }
 
 button:hover {
   background-color: #218838;
+  transform: scale(1.03);
 }
 
-/* Error message styling */
+/* Error message */
 .error-message {
   color: red;
   font-size: 14px;
-  margin-top: 10px;
+  text-align: center;
+  margin-top: 12px;
+  font-weight: bold;
 }
 
-/* New - Checkbox and Terms of Service */
-.terms-checkbox {
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-}
-
-.terms-checkbox input {
-  margin-right: 10px;
-}
-
-.terms-checkbox label {
-  font-size: 14px;
-}
-
-/* New - Success message for sign-up success */
+/* Success message */
 .success-message {
   color: green;
   font-size: 16px;
   text-align: center;
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+/* Terms checkbox */
+.terms-checkbox {
+  display: flex;
+  align-items: center;
   margin-top: 15px;
+}
+
+.terms-checkbox input {
+  margin-right: 8px;
+}
+
+.terms-checkbox label {
+  font-size: 14px;
+  color: #555;
 }
