@@ -1,128 +1,116 @@
-/* Main dashboard container */
 .dashboard-container {
-  max-width: 1200px;
-  margin: auto;
-  padding: 30px;
-  font-family: 'Arial', sans-serif;
-  background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
-  border-radius: 12px;
-  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  color: white;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: background-color 0.3s ease;
+  justify-content: flex-start;
 }
 
-/* Section for camera and recyclable materials (Top Section) */
-.upload-section {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  margin-bottom: 40px;
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.camera-box,
-.recyclable-info-box {
-  width: 48%; /* Each box takes 48% of the space */
+.upload-section, .reward-section, .feedback-section, .leaderboard-section {
+  background-color: rgba(0, 0, 0, 0.7);
   padding: 20px;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 12px;
-  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.camera-box:hover,
-.recyclable-info-box:hover {
-  transform: translateY(-10px);
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
-}
-
-/* Section for Reward Points and Feedback (Bottom Section) */
-.reward-feedback-section {
-  display: flex;
-  justify-content: space-between; /* Align boxes horizontally */
+  margin: 15px 0;
+  border-radius: 8px;
   width: 100%;
-  margin-bottom: 40px;
+  max-width: 800px;
 }
 
-.reward-section,
-.feedback-section {
-  width: 48%; /* Each box takes 48% of the space */
-  padding: 20px;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 12px;
-  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+h3 {
+  text-align: center;
+  color: #f1f1f1;
 }
 
-.reward-section:hover,
-.feedback-section:hover {
-  transform: translateY(-10px);
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+h4, p {
+  color: #f1f1f1;
 }
 
-/* Submit Waste Report Button Styling (Small rectangular button below the sections) */
-.submit-waste-report-button {
-  padding: 8px 20px;
-  margin-top: 20px;
-  cursor: pointer;
-  background-color: #e67e22; /* Different color to distinguish it */
+button {
+  background-color: #4CAF50;
   color: white;
+  padding: 10px 20px;
   border: none;
-  border-radius: 6px;
-  width: 160px;
-  font-size: 14px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.submit-waste-report-button:hover {
-  background-color: #d35400;
-  transform: scale(1.05);
-}
-
-/* Leadership Board Section */
-.leaderboard-section {
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  margin: 10px 0;
   width: 100%;
-  padding: 20px;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 12px;
-  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
-  margin-top: 40px; /* Adds spacing between sections */
+  max-width: 200px;
 }
 
-/* Rating Stars Styling */
+button:hover {
+  background-color: #45a049;
+}
+
+.camera-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.video-feed {
+  width: 300px;
+  height: 200px;
+  border: 2px solid #ccc;
+}
+
+textarea, input, select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.rewards ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.rewards li {
+  color: #f1f1f1;
+}
+
 .rating {
   display: flex;
   justify-content: center;
-  gap: 5px; /* Space between stars */
+  margin-bottom: 15px;
 }
 
-.rating .fa-star,
-.rating .star {
-  font-size: 30px; /* Size of the star */
-  color: #f39c12; /* Yellow color */
-  transition: color 0.3s ease;
+.rating button {
+  font-size: 30px;
+  color: #ddd;
+  background: none;
+  border: none;
+  margin: 0 5px;
 }
 
-.rating .fa-star:hover,
-.rating .star:hover {
-  color: #e67e22; /* Hover color (slightly darker yellow) */
+.rating button.active {
+  color: #FFD700; /* Gold color for selected stars */
 }
 
-/* Responsiveness */
-@media (max-width: 768px) {
-  .upload-section, .reward-feedback-section {
-    flex-direction: column; /* Stack boxes vertically on smaller screens */
-  }
-
-  .camera-box, .recyclable-info-box, .reward-section, .feedback-section {
-    width: 100%; /* Full width for small screens */
-    margin-bottom: 20px;
-  }
-
-  .submit-waste-report-button {
-    width: 100%; /* Full width for smaller screens */
-    font-size: 14px;
-  }
+.image-preview img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-top: 20px;
 }
 
+.leaderboard-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.leaderboard-section li {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 5px;
+  color: white;
+}
