@@ -1,91 +1,128 @@
+/* Main dashboard container */
 .dashboard-container {
-  max-width: 600px;
+  max-width: 1200px;
   margin: auto;
-  padding: 20px;
-  font-family: Arial, sans-serif;
+  padding: 30px;
+  font-family: 'Arial', sans-serif;
+  background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
+  border-radius: 12px;
+  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: background-color 0.3s ease;
 }
 
-button {
-  padding: 10px;
-  margin: 10px 0;
-  cursor: pointer;
-}
-
-textarea {
-  width: 100%;
-  height: 100px;
-  margin-top: 10px;
-}
-
-input[type="number"] {
-  padding: 5px;
-  margin-top: 10px;
-  width: 100%;
-}
-
-.video-feed {
-  width: 100%;
-  height: auto;
-  border: 1px solid #ccc;
-}
-
-.recyclable-material-section label {
-  display: block;
-  margin-bottom: 10px;
-}
-
-.recyclable-material-section select,
-.recyclable-material-section input,
-.recyclable-material-section textarea {
-  width: 100%;
-  padding: 8px;
-  margin-top: 5px;
-}
-
-.rewards {
-  list-style-type: none;
-  padding: 0;
-}
-
-.rewards li {
-  margin: 5px 0;
-}
-
-.rating {
-  display: flex;
-  gap: 5px;
-  justify-content: center;
-}
-
-.rating button {
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-}
-
-.rating button.active {
-  color: gold;
-}
-
-.image-preview {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 20px;
-}
-
-.image-preview img {
-  max-width: 100%;
-  height: auto;
-  margin-top: 10px;
-}
-
+/* Section for camera and recyclable materials (Top Section) */
 .upload-section {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 40px;
 }
+
+.camera-box,
+.recyclable-info-box {
+  width: 48%; /* Each box takes 48% of the space */
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.camera-box:hover,
+.recyclable-info-box:hover {
+  transform: translateY(-10px);
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Section for Reward Points and Feedback (Bottom Section) */
+.reward-feedback-section {
+  display: flex;
+  justify-content: space-between; /* Align boxes horizontally */
+  width: 100%;
+  margin-bottom: 40px;
+}
+
+.reward-section,
+.feedback-section {
+  width: 48%; /* Each box takes 48% of the space */
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.reward-section:hover,
+.feedback-section:hover {
+  transform: translateY(-10px);
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Submit Waste Report Button Styling (Small rectangular button below the sections) */
+.submit-waste-report-button {
+  padding: 8px 20px;
+  margin-top: 20px;
+  cursor: pointer;
+  background-color: #e67e22; /* Different color to distinguish it */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  width: 160px;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.submit-waste-report-button:hover {
+  background-color: #d35400;
+  transform: scale(1.05);
+}
+
+/* Leadership Board Section */
+.leaderboard-section {
+  width: 100%;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+  margin-top: 40px; /* Adds spacing between sections */
+}
+
+/* Rating Stars Styling */
+.rating {
+  display: flex;
+  justify-content: center;
+  gap: 5px; /* Space between stars */
+}
+
+.rating .fa-star,
+.rating .star {
+  font-size: 30px; /* Size of the star */
+  color: #f39c12; /* Yellow color */
+  transition: color 0.3s ease;
+}
+
+.rating .fa-star:hover,
+.rating .star:hover {
+  color: #e67e22; /* Hover color (slightly darker yellow) */
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .upload-section, .reward-feedback-section {
+    flex-direction: column; /* Stack boxes vertically on smaller screens */
+  }
+
+  .camera-box, .recyclable-info-box, .reward-section, .feedback-section {
+    width: 100%; /* Full width for small screens */
+    margin-bottom: 20px;
+  }
+
+  .submit-waste-report-button {
+    width: 100%; /* Full width for smaller screens */
+    font-size: 14px;
+  }
+}
+

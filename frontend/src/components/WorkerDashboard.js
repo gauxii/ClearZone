@@ -14,7 +14,9 @@ function WorkerDashboard() {
   useEffect(() => {
     // Load worker name if previously entered
     const savedName = localStorage.getItem("workerName");
-    if (savedName) setWorkerName(savedName);
+    if (savedName) {
+      setWorkerName(savedName);
+    }
   }, []);
 
   const acceptTask = (id) => {
@@ -25,9 +27,11 @@ function WorkerDashboard() {
       localStorage.setItem("workerName", name);
     }
 
-    // Find the selected task
+    // Find the selected task and update the status
     const updatedTasks = tasks.map((task) =>
-      task.id === id ? { ...task, status: `Accepted by ${workerName}` } : task
+      task.id === id && task.status === "Pending"
+        ? { ...task, status: `Accepted by ${workerName}` }
+        : task
     );
 
     setTasks(updatedTasks);
@@ -52,7 +56,12 @@ function WorkerDashboard() {
           {task.status.startsWith("Accepted") ? (
             <p>✅ {task.status}</p>
           ) : (
-            <button onClick={() => acceptTask(task.id)}>Accept Task</button>
+            <button
+              onClick={() => acceptTask(task.id)}
+              disabled={task.status !== "Pending"} // Disable if task is accepted
+            >
+              Accept Task
+            </button>
           )}
         </div>
       ))}
@@ -68,5 +77,3 @@ function WorkerDashboard() {
 }
 
 export default WorkerDashboard;
-
-

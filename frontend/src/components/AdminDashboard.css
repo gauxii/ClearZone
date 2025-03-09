@@ -1,16 +1,90 @@
-.admin-dashboard {
-  text-align: center;
-  padding: 20px;
+/* Full-Page Background */
+.admin-dashboard-container {
+  height: 100vh;
+  width: 100%;
+  background-size: cover;
+  background-position: center; /* Center the background image */
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  align-items: center;
+  justify-content: flex-start;
+  background-repeat: no-repeat;
 }
 
-.task-card, .recycling-card {
-  border: 1px solid #ddd;
-  padding: 15px;
-  margin: 10px auto;
-  width: 300px;
-  background: #f9f9f9;
-  border-radius: 8px;
+/* Admin Dashboard Heading */
+h2 {
+  color: #2c3e50;
+  font-weight: 700;
+  margin-top: 20px;
+  text-align: center;
 }
+
+/* Flexbox for Left and Right Layout */
+.dashboard-content {
+  display: flex; /* Display side by side */
+  justify-content: space-between; /* Space out the two boxes */
+  gap: 40px; /* Increased space between boxes */
+  width: 80%; /* Ensure it uses most of the screen width */
+  max-width: 1200px; /* Max width to prevent it from becoming too large */
+  margin-top: 20px; /* Space from the top */
+}
+
+/* Tasks and Recycling Containers */
+.tasks-container, .recycling-container {
+  flex: 1; /* Take equal space */
+  padding: 20px;
+  background: #fff; /* Solid white background */
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Tasks Container Border */
+.tasks-container {
+  border-left: 6px solid #3498db; /* Blue border for tasks */
+}
+
+/* Recycling Container Border */
+.recycling-container {
+  border-left: 6px solid #2ecc71; /* Green border for recycling */
+}
+
+/* Task & Recycling Cards */
+.task-card, .recycling-card {
+  background: #fff; /* Solid white background for cards */
+  padding: 20px;
+  border-radius: 10px;
+  margin: 15px 0;
+  text-align: left;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.task-card:hover, .recycling-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Task & Recycling Colors */
+.task-card {
+  border-left: 6px solid #3498db;
+}
+
+.recycling-card {
+  border-left: 6px solid #2ecc71;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-content {
+    flex-direction: column; /* Stack boxes vertically on small screens */
+    align-items: center; /* Center the boxes */
+  }
+
+  .tasks-container, .recycling-container {
+    width: 90%; /* Full width on mobile */
+    margin-bottom: 20px; /* Space between the stacked boxes */
+  }
+}
+
 
 
 

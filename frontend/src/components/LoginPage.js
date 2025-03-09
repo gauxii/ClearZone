@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./LoginPage.css";
+import backgroundImage from "../assets/background.jpg"; // Import image from assets folder
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -24,9 +25,27 @@ function LoginPage() {
   };
 
   return (
-    <div className="login-container">
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
+    <div
+      className="login-container"
+      style={{
+        backgroundImage: `url(${backgroundImage})`, // Use the imported image here
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      {/* Heading for ClearZone with green color */}
+      <h1 style={{ textAlign: "center", color: "#2ecc71", fontSize: "36px" }}>
+        ClearZone Waste Management
+      </h1>
+
+      <h2 style={{ textAlign: "center", color: "#2ecc71", marginTop: "20px" }}>Login</h2>
+      
+      <form onSubmit={handleLogin} style={{ maxWidth: "400px", width: "100%" }}>
         <div className="input-group">
           <label>Email:</label>
           <input
@@ -50,7 +69,7 @@ function LoginPage() {
         </div>
 
         {errorMessage && <div className="error-message">{errorMessage}</div>}
-        
+
         <button type="submit">Login</button>
       </form>
     </div>
@@ -58,4 +77,5 @@ function LoginPage() {
 }
 
 export default LoginPage;
+
 

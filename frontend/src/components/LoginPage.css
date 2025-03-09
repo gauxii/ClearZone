@@ -1,54 +1,103 @@
+/* In LoginPage.css */
+/* Updated login-container for positioning form at the top */
 .login-container {
-  width: 300px;
-  margin: 100px auto;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Align the content to the top */
+  align-items: center;
   padding: 20px;
-  border: 1px solid #ccc;
+}
+
+/* Form wrapper with background for better visibility */
+form {
+  background-color: rgba(255, 255, 255, 0.8); /* Added semi-transparent white background */
   border-radius: 8px;
-  background-color: #f9f9f9;
+  padding: 30px;
+  width: 100%;
+  max-width: 400px; /* Limit the form's width for better readability */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow to make the form pop */
 }
 
+/* Header for sign-up page */
 h2 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.input-group {
-  margin-bottom: 15px;
-}
-
-label {
-  text-align: center;
-  display: block;
+  margin-bottom: 30px;
+  color: #333;
+  font-size: 28px;
   font-weight: bold;
+  text-align: center;
 }
 
+/* Input fields group */
+.input-group {
+  margin-bottom: 20px; 
+  text-align: left;
+}
+
+/* Label style */
+label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8px;
+  color: #555;
+}
+
+/* Input fields */
 input {
   width: 100%;
-  padding: 8px;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
   margin-top: 5px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
 }
 
+/* Button styling */
 button {
   width: 100%;
-  padding: 10px;
-  background-color: #007bff;
+  padding: 14px;
+  background-color: #28a745;
   color: white;
   border: none;
-  border-radius: 4px;
-  font-size: 16px;
+  border-radius: 8px;
+  font-size: 18px;
   cursor: pointer;
+  transition: background 0.3s ease;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #218838;
 }
 
+/* Error message styling */
 .error-message {
   color: red;
-  font-size: 12px;
-  text-align: center;
+  font-size: 14px;
+  margin-top: 10px;
 }
 
-  
+/* New - Checkbox and Terms of Service */
+.terms-checkbox {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.terms-checkbox input {
+  margin-right: 10px;
+}
+
+.terms-checkbox label {
+  font-size: 14px;
+}
+
+/* New - Success message for sign-up success */
+.success-message {
+  color: green;
+  font-size: 16px;
+  text-align: center;
+  margin-top: 15px;
+}

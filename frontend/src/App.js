@@ -11,7 +11,6 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <h1 style={{ textAlign: 'center' }}>ClearZone Waste Management</h1>
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/upload" element={<CitizenDashboard />} /> {/* Updated route */}
@@ -26,7 +25,3 @@ function App() {
 }
 
 export default App;
-
-
-
-

@@ -1,24 +1,41 @@
 .worker-dashboard {
   text-align: center;
   padding: 20px;
+  background-image: url('/src/assets/worker-bg.jpg'); /* Path to your image */
+  background-size: cover; /* Ensures the image covers the entire container */
+  background-position: center; /* Centers the image */
+  height: 100vh; /* Makes the background image cover the full height */
+  color: white; /* Default color for text */
+}
+
+h2 {
+  color: black; /* Make the heading text black */
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.worker-dashboard p {
+  color: black; /* Make all paragraphs text black */
+  font-size: 1.2rem;
 }
 
 .task-card {
   border: 1px solid #ddd;
-  padding: 15px;
-  margin: 10px auto;
-  width: 300px;
-  background: #f9f9f9;
+  padding: 25px; /* Increase padding to make the content inside more spacious */
+  margin: 15px auto; /* Increase margin between the cards */
+  width: 400px; /* Increase width of the card */
+  background: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
   border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add some shadow for better visual appeal */
 }
 
 button {
-  padding: 8px 12px;
+  padding: 10px 15px; /* Increase padding inside the button */
   background: #007bff;
   color: white;
   border: none;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 15px;
   border-radius: 5px;
 }
 
@@ -27,17 +44,15 @@ button:hover {
 }
 
 .proceed-button {
-  padding: 10px;
+  padding: 12px 20px; /* Increase padding inside the button */
   background-color: #28a745;
   color: white;
   font-size: 16px;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 15px;
+  margin-top: 20px;
 }
 
 .proceed-button:hover {
   background-color: #218838;
 }
-
-  
