@@ -1,0 +1,43 @@
+.worker-dashboard {
+  text-align: center;
+  padding: 20px;
+}
+
+.task-card {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin: 10px auto;
+  width: 300px;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+button {
+  padding: 8px 12px;
+  background: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+.proceed-button {
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+.proceed-button:hover {
+  background-color: #218838;
+}
+
+  

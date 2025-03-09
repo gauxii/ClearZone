@@ -1,0 +1,18 @@
+.admin-dashboard {
+  text-align: center;
+  padding: 20px;
+}
+
+.task-card, .recycling-card {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin: 10px auto;
+  width: 300px;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+
+
+  
+  

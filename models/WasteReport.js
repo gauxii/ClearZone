@@ -1,28 +1,15 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const wasteReportSchema = new mongoose.Schema({
-  userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",  // Refers to the User model
-    required: true
-  },
+const WasteReportSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'AuthUser', required: true },
+  description: { type: String, required: true },
+  imageUrl: { type: String, required: true },
   location: {
     latitude: { type: Number, required: true },
     longitude: { type: Number, required: true }
   },
-  imageUrl: {
-    type: String, // URL of the uploaded waste image
-    required: true
-  },
-  status: {
-    type: String,
-    enum: ["pending", "assigned", "completed"],
-    default: "pending"
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
+  status: { type: String, enum: ['pending', 'in progress', 'resolved'], default: 'pending' },
+  createdAt: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model("WasteReport", wasteReportSchema);
+module.exports = mongoose.model('WasteReport', WasteReportSchema);

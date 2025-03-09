@@ -1,0 +1,91 @@
+.dashboard-container {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+button {
+  padding: 10px;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+textarea {
+  width: 100%;
+  height: 100px;
+  margin-top: 10px;
+}
+
+input[type="number"] {
+  padding: 5px;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.video-feed {
+  width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+}
+
+.recyclable-material-section label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.recyclable-material-section select,
+.recyclable-material-section input,
+.recyclable-material-section textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+}
+
+.rewards {
+  list-style-type: none;
+  padding: 0;
+}
+
+.rewards li {
+  margin: 5px 0;
+}
+
+.rating {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+}
+
+.rating button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.rating button.active {
+  color: gold;
+}
+
+.image-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.image-preview img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 10px;
+}
+
+.upload-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
