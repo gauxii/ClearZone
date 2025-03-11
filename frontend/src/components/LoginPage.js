@@ -51,7 +51,7 @@ function LoginPage() {
   return (
     <div className="login-container" style={{ backgroundImage: `url(${backgroundImage})` }}>
       <div className="login-box">
-        <h1 className="login-title">ClearZone Waste Management</h1>
+        <h1 className="login-title">ClearZone </h1>
         <h2 className="login-subtitle">Login</h2>
 
         <form onSubmit={handleLogin}>

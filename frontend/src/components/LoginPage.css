@@ -1,40 +1,48 @@
-/* Container for full-page background */
+/* Full-page background styling */
 .login-container {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   height: 100vh;
   display: flex;
-  flex-direction: column;
-  justify-content: center; /* Center content better */
+  justify-content: center;
   align-items: center;
-  padding: 40px 20px; /* More padding for spacing */
-}
-
-/* Form styling with a modern card effect */
-form {
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 10px;
-  padding: 30px;
-  width: 100%;
-  max-width: 400px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  padding: 40px 20px;
   backdrop-filter: blur(5px);
 }
 
-/* Headings */
-h2 {
-  margin-bottom: 25px;
-  color: #2c3e50;
-  font-size: 26px;
-  font-weight: bold;
+/* Modern card design for the login box */
+.login-box {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 35px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
   text-align: center;
+}
+
+/* Title & subtitle styling */
+.login-title {
+  color: #2c3e50;
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.login-subtitle {
+  color: #555;
+  font-size: 18px;
+  margin-bottom: 20px;
 }
 
 /* Input field container */
 .input-group {
-  margin-bottom: 18px;
+  margin-bottom: 10px;
   text-align: left;
+  width: 100%;
+  max-width: 400px; /* Set a uniform length for all input fields */
+  margin: auto;
 }
 
 /* Labels */
@@ -45,71 +53,77 @@ label {
   color: #333;
 }
 
-/* Input fields */
+/* Input fields & dropdown styling (ensuring uniform size) */
 input, select {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 16px;
   transition: border 0.3s ease;
+  display: block;  /* Ensures all elements take full width */
 }
 
+/* Ensure uniform size for dropdown */
+select {
+  appearance: none;
+  background-color: white;
+  cursor: pointer;
+}
+
+/* Input & dropdown focus effect */
 input:focus, select:focus {
-  border-color: #28a745;
+  border-color: #1e88e5;
   outline: none;
-  box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+  box-shadow: 0 0 6px rgba(30, 136, 229, 0.5);
 }
 
 /* Button styling */
-button {
-  width: 100%;
-  padding: 12px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s;
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 20px;
 }
 
-button:hover {
-  background-color: #218838;
-  transform: scale(1.03);
+button {
+  width: 48%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Login button */
+.login-button {
+  background-color: #1e88e5;
+  color: white;
+}
+
+.login-button:hover {
+  background-color: #1565c0;
+  transform: scale(1.05);
+}
+
+/* Sign-up button */
+.signup-button {
+  background-color: #43a047;
+  color: white;
+}
+
+.signup-button:hover {
+  background-color: #2e7d32;
+  transform: scale(1.05);
 }
 
 /* Error message */
 .error-message {
-  color: red;
+  color: #d32f2f;
   font-size: 14px;
   text-align: center;
   margin-top: 12px;
   font-weight: bold;
-}
-
-/* Success message */
-.success-message {
-  color: green;
-  font-size: 16px;
-  text-align: center;
-  margin-top: 12px;
-  font-weight: bold;
-}
-
-/* Terms checkbox */
-.terms-checkbox {
-  display: flex;
-  align-items: center;
-  margin-top: 15px;
-}
-
-.terms-checkbox input {
-  margin-right: 8px;
-}
-
-.terms-checkbox label {
-  font-size: 14px;
-  color: #555;
 }
