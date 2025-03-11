@@ -5,7 +5,7 @@ import backgroundImage from "../assets/background.jpg"; // Ensure this image exi
 
 function LoginPage() {
   const [role, setRole] = useState("user"); // Default role
-  const [identifier, setIdentifier] = useState(""); // Email or ID
+  const [identifier, setIdentifier] = useState(""); // Email for User, ID for Worker/Admin
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
@@ -14,10 +14,14 @@ function LoginPage() {
     e.preventDefault();
 
     const apiEndpoint = `http://localhost:5002/api/auth/login/${role}`;
+    
+    // ✅ Fixed request body
     const requestBody =
       role === "user"
-        ? { email: identifier, password }
-        : { id: identifier, password };
+        ? { email: identifier, password } // ✅ User Login
+        : role === "worker"
+        ? { employeeId: identifier, password } // ✅ Worker Login (Fixed key)
+        : { adminId: identifier, password }; // ✅ Admin Login (Fixed key)
 
     try {
       const response = await fetch(apiEndpoint, {
@@ -30,8 +34,9 @@ function LoginPage() {
 
       if (response.ok) {
         localStorage.setItem("token", data.token);
-        console.log(data.token)
-        // Redirect based on role
+        console.log("🔑 Token:", data.token);
+
+        // ✅ Redirect based on role
         const redirectPath =
           role === "user"
             ? "/upload"
@@ -40,10 +45,10 @@ function LoginPage() {
             : "/admin-dashboard";
         navigate(redirectPath);
       } else {
-        setErrorMessage(data.error || "Login failed!");
+        setErrorMessage(data.error || "Login failed! Please check your credentials.");
       }
     } catch (error) {
-      console.error("Login Error:", error);
+      console.error("❌ Login Error:", error);
       setErrorMessage("Server error. Please try again.");
     }
   };
@@ -51,7 +56,7 @@ function LoginPage() {
   return (
     <div className="login-container" style={{ backgroundImage: `url(${backgroundImage})` }}>
       <div className="login-box">
-        <h1 className="login-title">ClearZone </h1>
+        <h1 className="login-title">ClearZone</h1>
         <h2 className="login-subtitle">Login</h2>
 
         <form onSubmit={handleLogin}>
@@ -98,11 +103,10 @@ function LoginPage() {
             <button 
               type="button" 
               className="signup-button" 
-              onClick={() => navigate("/signup")}  // Change to lowercase
+              onClick={() => navigate("/signup")}  
             >
               Sign Up
             </button>
-
           </div>
         </form>
       </div>

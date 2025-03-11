@@ -41,7 +41,7 @@ router.post('/login/user', async (req, res) => {
 });
 
 
-// ✅ Worker Signup
+// ✅ User Signup
 router.post('/signup/user', async (req, res) => {
   const { name, email, password } = req.body;
 

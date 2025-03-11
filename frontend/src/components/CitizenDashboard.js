@@ -7,10 +7,9 @@ function CitizenDashboard() {
   const [location, setLocation] = useState(null);
   const [description, setDescription] = useState("");
   const [points, setPoints] = useState(0);
-  const [reports, setReports] = useState([]); // Stores latest submissions
+  const [reports, setReports] = useState([]);
   const videoRef = useRef(null);
 
-  // ✅ Fetch Latest Submissions
   useEffect(() => {
     fetchReports();
   }, []);
@@ -28,7 +27,6 @@ function CitizenDashboard() {
     }
   };
 
-  // ✅ Camera Access
   useEffect(() => {
     navigator.mediaDevices.getUserMedia({ video: true })
       .then((stream) => {
@@ -39,7 +37,6 @@ function CitizenDashboard() {
       });
   }, []);
 
-  // ✅ Geolocation Access
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -56,7 +53,6 @@ function CitizenDashboard() {
     }
   }, []);
 
-  // ✅ Capture Image from Camera
   const captureImage = () => {
     const canvas = document.createElement("canvas");
     const video = videoRef.current;
@@ -68,7 +64,6 @@ function CitizenDashboard() {
     setImage(imageUrl);
   };
 
-  // ✅ Submit Waste Report
   const handleSubmitReport = async () => {
     if (!image || !location || !description) {
       alert("Please provide an image (captured or uploaded), description, and allow location access.");
@@ -90,16 +85,15 @@ function CitizenDashboard() {
       });
 
       alert("Waste reported successfully!");
-      fetchReports(); // Refresh latest reports
-      setDescription(""); // Clear input field
-      setImage(null); // Reset image
+      fetchReports();
+      setDescription("");
+      setImage(null);
     } catch (error) {
       console.error("Error submitting report:", error);
       alert("Failed to report waste. Please try again.");
     }
   };
 
-  // ✅ Convert Data URL to Blob
   function dataURItoBlob(dataURI) {
     const byteString = atob(dataURI.split(",")[1]);
     const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
@@ -111,12 +105,21 @@ function CitizenDashboard() {
     return new Blob([ab], { type: mimeString });
   }
 
+  const scrollToSection = (id) => {
+    document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <div className="dashboard-container">
+      <nav className="navbar">
+        <button onClick={() => scrollToSection("report-section")}>Report Waste</button>
+        <button onClick={() => scrollToSection("submissions-section")}>View Latest Submissions</button>
+        <button onClick={() => scrollToSection("reward-section")}>View Reward Points</button>
+      </nav>
+
       <h2>Citizen Waste Reporting Dashboard</h2>
 
-      {/* ✅ Report Waste Section */}
-      <div className="upload-section">
+      <div id="report-section" className="upload-section">
         <h3>Report Waste</h3>
         {location && <p>📍 Your Location: {location.latitude}, {location.longitude}</p>}
 
@@ -136,8 +139,7 @@ function CitizenDashboard() {
         <button onClick={handleSubmitReport}>Submit Waste Report</button>
       </div>
 
-      {/* ✅ Latest Waste Reports Section */}
-      <div className="latest-reports">
+      <div id="submissions-section" className="latest-reports">
         <h3>Latest Submissions</h3>
         {reports.length === 0 ? (
           <p>No reports found.</p>
@@ -156,7 +158,7 @@ function CitizenDashboard() {
         )}
       </div>
 
-      <div className="reward-section">
+      <div id="reward-section" className="reward-section">
         <h3>Reward Points</h3>
         <p>You currently have {points} points.</p>
       </div>

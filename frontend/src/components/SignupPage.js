@@ -5,9 +5,9 @@ import backgroundImage from "../assets/background.jpg"; // Ensure this image exi
 
 function SignupPage() {
   const [role, setRole] = useState("user");
-  const [name, setName] = useState(""); // Name (for Users)
-  const [email, setEmail] = useState(""); // Email (for Users)
-  const [id, setId] = useState(""); // ID (for Workers/Admins)
+  const [name, setName] = useState(""); // Name for Users, Workers, and Admins
+  const [email, setEmail] = useState(""); // Email for Users
+  const [id, setId] = useState(""); // Employee ID for Workers, Admin ID for Admins
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -18,15 +18,20 @@ function SignupPage() {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      setErrorMessage("Passwords do not match!");
+      setErrorMessage("❌ Passwords do not match!");
       return;
     }
 
+    // Set API endpoint dynamically
     const apiEndpoint = `http://localhost:5002/api/auth/signup/${role}`;
+
+    // Prepare request body based on selected role
     const requestBody =
       role === "user"
-        ? { name, email, password }
-        : { id, password };
+        ? { name, email, password } // User signup
+        : role === "worker"
+        ? { name, employeeId: id, password } // Worker signup (use employeeId)
+        : { name, adminId: id, password }; // Admin signup (use adminId)
 
     try {
       const response = await fetch(apiEndpoint, {
@@ -38,14 +43,14 @@ function SignupPage() {
       const data = await response.json();
 
       if (response.ok) {
-        setSuccessMessage("Signup successful! Redirecting to login...");
+        setSuccessMessage("✅ Signup successful! Redirecting to login...");
         setTimeout(() => navigate("/login"), 2000);
       } else {
-        setErrorMessage(data.error || "Signup failed!");
+        setErrorMessage(`❌ ${data.error || "Signup failed!"}`);
       }
     } catch (error) {
       console.error("Signup Error:", error);
-      setErrorMessage("Server error. Please try again.");
+      setErrorMessage("❌ Server error. Please try again.");
     }
   };
 
@@ -66,28 +71,30 @@ function SignupPage() {
             </select>
           </div>
 
-          {/* Name (Only for Users) */}
-          {role === "user" && (
-            <div className="input-group">
-              <label>Name:</label>
-              <input
-                type="text"
-                placeholder="Enter your name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-            </div>
-          )}
+          {/* Name for all roles */}
+          <div className="input-group">
+            <label>Name:</label>
+            <input
+              type="text"
+              placeholder="Enter your name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
 
           {/* Email for Users / ID for Workers & Admins */}
           <div className="input-group">
-            <label>{role === "user" ? "Email:" : "ID:"}</label>
+            <label>{role === "user" ? "Email:" : role === "worker" ? "Employee ID:" : "Admin ID:"}</label>
             <input
               type="text"
-              placeholder={role === "user" ? "Enter your email" : "Enter your ID"}
+              placeholder={
+                role === "user" ? "Enter your email" : role === "worker" ? "Enter your Employee ID (EMP123)" : "Enter your Admin ID (ADMIN123)"
+              }
               value={role === "user" ? email : id}
-              onChange={(e) => (role === "user" ? setEmail(e.target.value) : setId(e.target.value))}
+              onChange={(e) =>
+                role === "user" ? setEmail(e.target.value) : setId(e.target.value)
+              }
               required
             />
           </div>
