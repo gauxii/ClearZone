@@ -1,118 +1,160 @@
+/* General Dashboard Styles */
 .dashboard-container {
   font-family: Arial, sans-serif;
   padding: 20px;
   color: white;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background-color: #1a1a1a; /* Dark theme */
+  background: url("../assets/backcitizen.jpg") no-repeat center center/cover; /* ✅ Background Image */
+  position: relative;
+}
+
+/* Overlay to improve readability */
+.dashboard-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* ✅ Dark overlay */
+  z-index: -1;
 }
 
 h2 {
   text-align: center;
   margin-bottom: 20px;
+  font-size: 28px;
 }
 
-.upload-section, 
-.reward-section, 
-.feedback-section, 
+/* Navbar Styles */
+.navbar {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 10px;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: background 0.3s ease;
+}
+
+.navbar button:hover {
+  background-color: #45a049;
+}
+
+/* Section Styling */
+.upload-section,
+.reward-section,
+.feedback-section,
 .leaderboard-section,
-.latest-reports { /* ✅ Added Latest Submissions Section */
+.latest-reports {
   background-color: rgba(0, 0, 0, 0.7);
   padding: 20px;
-  margin: 15px 0;
-  border-radius: 8px;
-  width: 100%;
+  margin: 20px 0;
+  border-radius: 10px;
+  width: 90%;
   max-width: 800px;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
 }
 
 h3 {
   text-align: center;
   color: #f1f1f1;
+  font-size: 22px;
+  margin-bottom: 15px;
 }
 
-h4, p {
-  color: #f1f1f1;
-}
-
+/* Button Styles */
 button {
   background-color: #4CAF50;
   color: white;
-  padding: 10px 20px;
+  padding: 12px;
   border: none;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 6px;
   font-size: 16px;
-  margin: 10px 0;
   width: 100%;
-  max-width: 200px;
+  max-width: 250px;
+  transition: all 0.3s;
 }
 
 button:hover {
   background-color: #45a049;
+  transform: scale(1.05);
 }
 
+/* Awareness Section */
+.awareness-section {
+  text-align: center;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  width: 90%;
+  max-width: 800px;
+}
+
+.awareness-image {
+  width: 100%;
+  max-width: 400px;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+/* Form Fields */
+textarea,
+input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #2a2a2a;
+  color: white;
+  font-size: 16px;
+}
+
+/* Camera Section */
 .camera-section {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   margin-bottom: 20px;
 }
 
 .video-feed {
-  width: 300px;
-  height: 200px;
-  border: 2px solid #ccc;
-  border-radius: 8px;
-}
-
-textarea, input, select {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  background-color: #2a2a2a;
-  color: white;
-}
-
-.rewards ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.rewards li {
-  color: #f1f1f1;
-}
-
-.rating {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 15px;
-}
-
-.rating button {
-  font-size: 30px;
-  color: #ddd;
-  background: none;
-  border: none;
-  margin: 0 5px;
-}
-
-.rating button.active {
-  color: #FFD700; /* Gold color for selected stars */
-}
-
-/* ✅ Image Preview Styling */
-.image-preview img {
-  max-width: 100%;
+  max-width: 400px;
+  height: auto;
   border-radius: 8px;
-  margin-top: 20px;
   border: 2px solid #4CAF50;
 }
 
-/* ✅ Latest Submissions List */
+/* Image Preview */
+.image-preview img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-top: 15px;
+  border: 2px solid #4CAF50;
+}
+
+/* Latest Reports */
 .latest-reports ul {
   list-style-type: none;
   padding: 0;
@@ -122,31 +164,26 @@ textarea, input, select {
   background-color: rgba(0, 0, 0, 0.5);
   padding: 15px;
   margin: 10px 0;
-  border-radius: 5px;
+  border-radius: 6px;
   color: white;
   border-left: 5px solid #4CAF50;
+  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
 }
 
-/* ✅ Reported Image Styling */
 .report-image {
   max-width: 100%;
   height: auto;
-  border-radius: 8px;
+  border-radius: 6px;
   margin-top: 10px;
   border: 2px solid #ccc;
 }
 
-/* ✅ Leaderboard Section */
-.leaderboard-section ul {
-  list-style-type: none;
-  padding: 0;
+/* Reward Section */
+.reward-section {
+  text-align: center;
 }
 
-.leaderboard-section li {
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 10px;
-  margin: 5px 0;
-  border-radius: 5px;
-  color: white;
-  border-left: 5px solid #FFD700;
+.reward-section p {
+  font-size: 18px;
+  font-weight: bold;
 }

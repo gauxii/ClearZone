@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./CitizenDashboard.css";
+import awarenessImage from "../assets/image.jpg"; // Add your awareness image
+import cleanCityImage from "../assets/image1.jpg"; // Add a second relevant image
 
 function CitizenDashboard() {
-  const [image, setImage] = useState(null);
-  const [location, setLocation] = useState(null);
-  const [description, setDescription] = useState("");
   const [points, setPoints] = useState(0);
   const [reports, setReports] = useState([]);
-  const videoRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchReports();
@@ -27,116 +27,38 @@ function CitizenDashboard() {
     }
   };
 
-  useEffect(() => {
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then((stream) => {
-        videoRef.current.srcObject = stream;
-      })
-      .catch((error) => {
-        console.error("Error accessing camera:", error);
-      });
-  }, []);
-
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          });
-        },
-        (error) => {
-          console.error("Error getting location:", error);
-        }
-      );
-    }
-  }, []);
-
-  const captureImage = () => {
-    const canvas = document.createElement("canvas");
-    const video = videoRef.current;
-    const ctx = canvas.getContext("2d");
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    const imageUrl = canvas.toDataURL("image/png");
-    setImage(imageUrl);
-  };
-
-  const handleSubmitReport = async () => {
-    if (!image || !location || !description) {
-      alert("Please provide an image (captured or uploaded), description, and allow location access.");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("image", dataURItoBlob(image), "waste.png");
-    formData.append("description", description);
-    formData.append("latitude", location.latitude);
-    formData.append("longitude", location.longitude);
-
-    try {
-      await axios.post("http://localhost:5002/api/waste/report", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${localStorage.getItem("token")}`
-        },
-      });
-
-      alert("Waste reported successfully!");
-      fetchReports();
-      setDescription("");
-      setImage(null);
-    } catch (error) {
-      console.error("Error submitting report:", error);
-      alert("Failed to report waste. Please try again.");
-    }
-  };
-
-  function dataURItoBlob(dataURI) {
-    const byteString = atob(dataURI.split(",")[1]);
-    const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
-    const ab = new ArrayBuffer(byteString.length);
-    const ia = new Uint8Array(ab);
-    for (let i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i);
-    }
-    return new Blob([ab], { type: mimeString });
-  }
-
-  const scrollToSection = (id) => {
-    document.getElementById(id).scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
     <div className="dashboard-container">
       <nav className="navbar">
-        <button onClick={() => scrollToSection("report-section")}>Report Waste</button>
-        <button onClick={() => scrollToSection("submissions-section")}>View Latest Submissions</button>
-        <button onClick={() => scrollToSection("reward-section")}>View Reward Points</button>
+        <button onClick={() => document.getElementById("submissions-section").scrollIntoView({ behavior: "smooth" })}>View Latest Submissions</button>
+        <button onClick={() => document.getElementById("reward-section").scrollIntoView({ behavior: "smooth" })}>View Reward Points</button>
+        <button onClick={() => document.getElementById("reward-section").scrollIntoView({ behavior: "smooth" })}>View Leadership Board</button>
       </nav>
 
-      <h2>Citizen Waste Reporting Dashboard</h2>
-
-      <div id="report-section" className="upload-section">
-        <h3>Report Waste</h3>
-        {location && <p>📍 Your Location: {location.latitude}, {location.longitude}</p>}
-
-        <textarea
-          placeholder="Describe the waste location..."
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-
-        <div className="camera-section">
-          <video ref={videoRef} autoPlay playsInline className="video-feed" />
-          <button onClick={captureImage}>Capture Waste Image</button>
+      <div className="awareness-section">
+        {/* ✅ Added Awareness Images Above the Text */}
+        <div className="image-container">
+          <img src={awarenessImage} alt="Environmental Awareness" className="awareness-image" />
+          <img src={cleanCityImage} alt="Clean City Initiative" className="awareness-image" />
         </div>
 
-        {image && <img src={image} alt="Captured Waste" className="image-preview" />}
+        <p className="awareness-text">"ClearZone: Empowering Citizens for a Cleaner Community"</p> 
+        <p>
+          ClearZone is a citizen-driven waste management platform designed to make waste reporting quick, easy, and impactful. 
+          As a responsible citizen, you can actively contribute to keeping your surroundings clean by using ClearZone to report 
+          waste accumulation in your area. Simply capture an image, share the location, and submit the report—all in just a few clicks.
+        </p>
+        <p>
+          With real-time tracking, your reports are directly sent to the designated waste management workers, ensuring timely collection 
+          and disposal. You can also track the progress of your reports and see how your contributions are making a difference.
+        </p>
+        <p>
+          To encourage active participation, ClearZone offers a reward points system—every waste report you submit earns you points, 
+          which can later be redeemed for benefits. By using ClearZone, you are not just reporting waste; you are playing a vital role 
+          in creating a cleaner, healthier, and more sustainable environment for everyone. Join us in making a difference today!
+        </p>
 
-        <button onClick={handleSubmitReport}>Submit Waste Report</button>
+        <button className="report-btn" onClick={() => navigate("/capture-waste")}>Report Waste</button>
       </div>
 
       <div id="submissions-section" className="latest-reports">
