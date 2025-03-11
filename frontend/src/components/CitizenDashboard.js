@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./CitizenDashboard.css";
-import awarenessImage from "../assets/image.jpg"; // Add your awareness image
-import cleanCityImage from "../assets/image1.jpg"; // Add a second relevant image
+import awarenessImage from "../assets/image.jpg"; 
+import cleanCityImage from "../assets/image1.jpg"; 
 
 function CitizenDashboard() {
   const [points, setPoints] = useState(0);
@@ -36,7 +36,6 @@ function CitizenDashboard() {
       </nav>
 
       <div className="awareness-section">
-        {/* ✅ Added Awareness Images Above the Text */}
         <div className="image-container">
           <img src={awarenessImage} alt="Environmental Awareness" className="awareness-image" />
           <img src={cleanCityImage} alt="Clean City Initiative" className="awareness-image" />
@@ -61,22 +60,34 @@ function CitizenDashboard() {
         <button className="report-btn" onClick={() => navigate("/capture-waste")}>Report Waste</button>
       </div>
 
+      {/* ✅ Updated Latest Submissions Section to Table Format */}
       <div id="submissions-section" className="latest-reports">
         <h3>Latest Submissions</h3>
         {reports.length === 0 ? (
           <p>No reports found.</p>
         ) : (
-          <ul>
-            {reports.map((report) => (
-              <li key={report._id} className="report-item">
-                <p><strong>Description:</strong> {report.description}</p>
-                <p><strong>Status:</strong> {report.status}</p>
-                <p><strong>Assigned To:</strong> {report.assigned || "None"}</p>
-                <p><strong>Submitted On:</strong> {new Date(report.createdAt).toLocaleString()}</p>
-                <img src={report.imageUrl} alt="Reported Waste" className="report-image" />
-              </li>
-            ))}
-          </ul>
+          <table className="reports-table">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Assigned To</th>
+                <th>Submitted On</th>
+                <th>Image</th>
+              </tr>
+            </thead>
+            <tbody>
+              {reports.map((report) => (
+                <tr key={report._id}>
+                  <td>{report.description}</td>
+                  <td>{report.status}</td>
+                  <td>{report.assigned || "None"}</td>
+                  <td>{new Date(report.createdAt).toLocaleString()}</td>
+                  <td><img src={report.imageUrl} alt="Reported Waste" className="table-image" /></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         )}
       </div>
 

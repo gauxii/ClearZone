@@ -187,3 +187,42 @@ input {
   font-size: 18px;
   font-weight: bold;
 }
+/* ✅ Table Styling - Made smaller */
+.reports-table {
+  width: 80%; /* Reduced table width */
+  max-width: 700px; /* Decreased max width */
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* ✅ Table Headers & Cells */
+.reports-table th, .reports-table td {
+  padding: 8px; /* Reduced padding */
+  font-size: 14px; /* Decreased font size */
+  text-align: center;
+  color: white;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.reports-table th {
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+}
+
+/* ✅ Reduce Image Size Inside Table */
+.table-image {
+  width: 50px; /* Decreased image width */
+  height: 50px; /* Decreased image height */
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* ✅ Hover Effect */
+.reports-table tr:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
