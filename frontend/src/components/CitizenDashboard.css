@@ -75,7 +75,7 @@ h2 {
 
 h3 {
   text-align: center;
-  color: #f1f1f1;
+  color: black;
   font-size: 22px;
   margin-bottom: 15px;
 }
@@ -224,5 +224,55 @@ input {
 /* ✅ Hover Effect */
 .reports-table tr:hover {
   background-color: rgba(255, 255, 255, 0.1);
+}
+/* ✅ Reward Popup - Centered */
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* ✅ Center the popup */
+  background: rgba(76, 175, 80, 0.95); /* ✅ Slightly transparent green */
+  color: white;
+  padding: 15px 30px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  font-weight: bold;
+  font-size: 18px;
+  text-align: center;
+  z-index: 1000;
+  width: 250px; /* ✅ Fixed width */
+  height: 100px; /* ✅ Fixed height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1; /* ✅ Ensure visibility */
+  transition: opacity 0.5s ease-in-out; /* ✅ Smooth fade-out effect */
+}
+
+/* ✅ Hide Popup After Animation */
+.popup.hidden {
+  opacity: 0;
+}
+/* ✅ Reward Popup - Centered */
+.reward-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(76, 175, 80, 0.95);
+  color: white;
+  padding: 15px 30px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 18px;
+  text-align: center;
+  z-index: 1000;
+  width: 250px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
 }
 

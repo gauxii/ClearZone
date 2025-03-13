@@ -9,7 +9,8 @@ const WasteReportSchema = new mongoose.Schema({
     longitude: { type: Number, required: true }
   },
   status: { type: String, enum: ['pending', 'in progress', 'resolved'], default: 'pending' },
-  assigned: { type: String, default: 'none' }, // New field to track assigned workers (default: none)
+  assigned: { type: String, default: 'none' }, // Tracks assigned workers (default: none)
+  pointsEarned: { type: Number, default: 10 }, // ✅ Citizens earn 10 points per report
   createdAt: { type: Date, default: Date.now }
 });
 

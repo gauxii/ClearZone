@@ -1,9 +1,10 @@
 const express = require('express');
-const multer = require('multer'); // For handling file uploads
+const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const WasteReport = require('../models/WasteReport');
-const authMiddleware = require('../middleware/authMiddleware'); // Authentication middleware
+const User = require('../models/AuthUser'); // ✅ Import User model
+const authMiddleware = require('../middleware/authMiddleware');
 require('dotenv').config();
 
 const router = express.Router();
@@ -19,14 +20,14 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {
-    folder: 'waste_reports', // Cloudinary folder name
+    folder: 'waste_reports',
     allowed_formats: ['jpg', 'jpeg', 'png']
   }
 });
 
 const upload = multer({ storage });
 
-// ✅ Report Waste Endpoint
+// ✅ Report Waste & Update Reward Points
 router.post('/report', authMiddleware, upload.single('image'), async (req, res) => {
   try {
     console.log("🔹 User ID from authMiddleware:", req.user);
@@ -39,19 +40,38 @@ router.post('/report', authMiddleware, upload.single('image'), async (req, res) 
       return res.status(400).json({ error: 'Image upload is required' });
     }
 
-    // ✅ Create and save the waste report
+    // ✅ Create and save the waste report with points earned
     const wasteReport = new WasteReport({
       userId: req.user.id,
       description,
       imageUrl: req.file.path,
       location: { latitude, longitude },
-      assigned: 'none' // Default assigned field set to 'none'
+      assigned: 'none',
+      pointsEarned: 10  // ✅ Citizens earn 10 points per report
     });
 
     await wasteReport.save();
-    res.status(201).json({ message: '✅ Waste reported successfully', wasteReport });
+
+    // ✅ Update user's total reward points
+    await User.findByIdAndUpdate(req.user.id, { $inc: { rewardPoints: 10 } });
+
+    res.status(201).json({ message: '✅ Waste reported successfully!', wasteReport });
   } catch (err) {
     console.error('❌ Waste Report Error:', err);
+    res.status(500).json({ error: 'Server Error', details: err.message });
+  }
+});
+
+// ✅ Get User's Reward Points
+router.get('/my-reward-points', authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('rewardPoints');
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.status(200).json({ rewardPoints: user.rewardPoints });
+  } catch (err) {
+    console.error('❌ Fetch Reward Points Error:', err);
     res.status(500).json({ error: 'Server Error', details: err.message });
   }
 });
@@ -71,8 +91,8 @@ router.get('/all-reports', authMiddleware, async (req, res) => {
 router.get('/my-reports', authMiddleware, async (req, res) => {
   try {
     const userReports = await WasteReport.find({ userId: req.user.id })
-      .select('description imageUrl location status assigned createdAt')
-      .sort({ createdAt: -1 }); // Sort by most recent reports first
+      .select('description imageUrl location status assigned createdAt pointsEarned')
+      .sort({ createdAt: -1 });
 
     res.status(200).json(userReports);
   } catch (err) {
@@ -80,5 +100,19 @@ router.get('/my-reports', authMiddleware, async (req, res) => {
     res.status(500).json({ error: 'Server Error', details: err.message });
   }
 });
+// ✅ Fetch Reward Points for Logged-in User
+router.get('/reward-points', authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select('rewardPoints');
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.status(200).json({ rewardPoints: user.rewardPoints });
+  } catch (error) {
+    console.error("❌ Error fetching reward points:", error);
+    res.status(500).json({ error: "Server Error", details: error.message });
+  }
+});
+
 
 module.exports = router;
