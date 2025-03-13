@@ -1,4 +1,4 @@
-/* Full-page background with darker effect */
+/* Full-page background with an even darker overlay */
 .login-container {
   background-size: cover;
   background-position: center;
@@ -8,13 +8,26 @@
   justify-content: center;
   align-items: center;
   padding: 40px 20px;
-  backdrop-filter: blur(7px);
-  background-color: rgba(10, 10, 10, 0.9); /* Darker overlay */
+  position: relative;
+}
+
+/* Dark overlay to enhance readability */
+.login-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7); /* Darker overlay for better contrast */
+  z-index: 1;
 }
 
 /* Glassmorphic card design with glowing border */
 .login-box {
-  background: rgba(20, 20, 20, 0.8);
+  position: relative;
+  z-index: 2;
+  background: rgba(20, 20, 20, 0.85);
   border-radius: 15px;
   padding: 35px;
   width: 100%;
@@ -25,7 +38,7 @@
   animation: fadeInUp 1s ease-out;
 }
 
-/* Title & subtitle with neon glow */
+/* Title & subtitle styling */
 .login-title {
   color: #0aff9d;
   font-size: 30px;
@@ -40,7 +53,7 @@
   margin-bottom: 20px;
 }
 
-/* Input fields & dropdown styling (increased visibility) */
+/* Input fields & dropdown styling */
 .input-group {
   margin-bottom: 15px;
   text-align: left;
@@ -49,7 +62,7 @@
   margin: auto;
 }
 
-/* Labels - more visible */
+/* Labels - Improved visibility */
 label {
   font-weight: bold;
   display: block;
@@ -58,7 +71,7 @@ label {
   text-shadow: 0px 0px 3px rgba(255, 255, 255, 0.6);
 }
 
-/* Inputs & dropdown styling */
+/* Input & Dropdown */
 input, select {
   width: 100%;
   padding: 12px;
@@ -71,7 +84,7 @@ input, select {
   text-align: center;
 }
 
-/* Dropdown arrow color fix */
+/* Dropdown arrow fix */
 select {
   appearance: none;
   background-image: linear-gradient(to bottom, #0aff9d, #007d65);
