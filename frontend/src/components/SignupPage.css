@@ -1,16 +1,17 @@
-/* Full-page background styling */
+/* Full-page background with dark overlay */
 .signup-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
   position: relative;
 }
 
-/* Darker overlay for better visibility */
+/* Dark overlay for better contrast */
 .signup-container::before {
   content: "";
   position: absolute;
@@ -18,125 +19,158 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.75); /* Even darker overlay */
+  background: rgba(0, 0, 0, 0.7); /* Darker overlay */
   z-index: 1;
 }
 
-/* Signup box with glassmorphism effect */
+/* Glassmorphic card design with animated glowing border */
 .signup-box {
   position: relative;
   z-index: 2;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
-  width: 350px;
+  background: rgba(20, 20, 20, 0.85);
+  border-radius: 15px;
+  padding: 35px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0px 0px 15px rgba(0, 255, 170, 0.4); /* Soft neon glow */
   text-align: center;
-  animation: fadeIn 1s ease-in-out;
+  border: 2px solid transparent;
+  animation: glowing-border 2s infinite alternate, fadeInUp 1s ease-out;
 }
 
-/* Title & Subtitle */
+/* Title & subtitle */
 .signup-title {
-  font-size: 2rem;
+  color: #0aff9d;
+  font-size: 30px;
   font-weight: bold;
-  color: #ffffff;
-  text-shadow: 0px 0px 8px rgba(0, 255, 255, 1);
-  animation: glow 1.5s infinite alternate;
+  margin-bottom: 10px;
+  text-shadow: 0px 0px 5px rgba(0, 255, 170, 0.7);
 }
 
 .signup-subtitle {
-  font-size: 1.4rem;
+  color: #9ddcdc;
+  font-size: 18px;
   margin-bottom: 20px;
-  color: #ffffff;
 }
 
-/* Input field container */
+/* Input fields */
 .input-group {
   margin-bottom: 15px;
   text-align: left;
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
 }
 
-/* Labels */
-.input-group label {
-  display: block;
+label {
   font-weight: bold;
-  margin-bottom: 5px;
+  display: block;
+  margin-bottom: 6px;
   color: #ffffff;
+  text-shadow: 0px 0px 3px rgba(255, 255, 255, 0.6);
 }
 
-/* Input fields & dropdown styling */
-.input-group input,
-.input-group select {
+/* Input & Dropdown */
+input, select {
   width: 100%;
   padding: 12px;
-  font-size: 1rem;
+  border: 1px solid #0aff9d;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #0aff9d;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+/* Dropdown styling */
+select {
+  appearance: none;
+  background-image: linear-gradient(to bottom, #0aff9d, #007d65);
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Focus effects */
+input:focus, select:focus {
+  border-color: #0aff9d;
+  outline: none;
+  box-shadow: 0px 0px 8px rgba(0, 255, 170, 0.8);
+}
+
+/* Button group */
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* Common button styles */
+button {
+  width: 48%;
+  padding: 12px;
   border: none;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  outline: none;
-  transition: 0.3s ease-in-out;
-}
-
-/* Placeholder text color */
-.input-group input::placeholder {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-/* Input focus effect */
-.input-group input:focus,
-.input-group select:focus {
-  border: 2px solid #00ffaa;
-  box-shadow: 0px 0px 10px #00ffaa;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  text-transform: uppercase;
 }
 
 /* Signup button */
 .signup-button {
-  width: 100%;
-  padding: 12px;
-  font-size: 1.2rem;
-  background: linear-gradient(45deg, #00ffaa, #00bcd4);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.3s;
+  background: linear-gradient(135deg, #0aff9d, #007d65);
+  color: black;
+  font-weight: bold;
+  border: 1px solid rgba(0, 255, 170, 0.6);
+  text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
 }
 
-/* Hover effect */
 .signup-button:hover {
+  background: linear-gradient(135deg, #0aff9d, #00cc99);
   transform: scale(1.05);
-  background: linear-gradient(45deg, #00ffcc, #00acc1);
 }
 
 /* Error & Success Messages */
 .error-message {
   color: #ff4d4d;
-  font-size: 0.9rem;
-  margin-bottom: 10px;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 12px;
+  font-weight: bold;
 }
 
 .success-message {
-  color: #66ff66;
-  font-size: 0.9rem;
-  margin-bottom: 10px;
+  color: #00ff7f;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 12px;
+  font-weight: bold;
 }
 
-/* Animations */
-@keyframes glow {
-  0% { text-shadow: 0px 0px 5px rgba(0, 255, 255, 0.8); }
-  100% { text-shadow: 0px 0px 15px rgba(0, 255, 255, 1); }
+/* ✅ Animated Glowing Border */
+@keyframes glowing-border {
+  0% {
+    border-color: rgba(0, 255, 170, 0.5);
+    box-shadow: 0px 0px 10px rgba(0, 255, 170, 0.5);
+  }
+  100% {
+    border-color: rgba(0, 255, 170, 1);
+    box-shadow: 0px 0px 20px rgba(0, 255, 170, 1);
+  }
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Responsive */
-@media (max-width: 400px) {
-  .signup-box {
-      width: 90%;
+/* ✅ Slide-in animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
