@@ -1,89 +1,142 @@
-/* Signup Page Styling */
+/* Full-page background styling */
 .signup-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+/* Darker overlay for better visibility */
+.signup-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75); /* Even darker overlay */
+  z-index: 1;
+}
+
+/* Signup box with glassmorphism effect */
+.signup-box {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.4);
+  width: 350px;
+  text-align: center;
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Title & Subtitle */
+.signup-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 0px 0px 8px rgba(0, 255, 255, 1);
+  animation: glow 1.5s infinite alternate;
+}
+
+.signup-subtitle {
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+/* Input field container */
+.input-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+/* Labels */
+.input-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #ffffff;
+}
+
+/* Input fields & dropdown styling */
+.input-group input,
+.input-group select {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  outline: none;
+  transition: 0.3s ease-in-out;
+}
+
+/* Placeholder text color */
+.input-group input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Input focus effect */
+.input-group input:focus,
+.input-group select:focus {
+  border: 2px solid #00ffaa;
+  box-shadow: 0px 0px 10px #00ffaa;
+}
+
+/* Signup button */
+.signup-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.2rem;
+  background: linear-gradient(45deg, #00ffaa, #00bcd4);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* Hover effect */
+.signup-button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(45deg, #00ffcc, #00acc1);
+}
+
+/* Error & Success Messages */
+.error-message {
+  color: #ff4d4d;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+.success-message {
+  color: #66ff66;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+
+/* Animations */
+@keyframes glow {
+  0% { text-shadow: 0px 0px 5px rgba(0, 255, 255, 0.8); }
+  100% { text-shadow: 0px 0px 15px rgba(0, 255, 255, 1); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 400px) {
   .signup-box {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    width: 350px;
-    text-align: center;
-  }
-  
-  .signup-title {
-    font-size: 1.8rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #2c3e50;
-  }
-  
-  .signup-subtitle {
-    font-size: 1.4rem;
-    margin-bottom: 20px;
-    color: #34495e;
-  }
-  
-  .input-group {
-    margin-bottom: 15px;
-    text-align: left;
-  }
-  
-  .input-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #2c3e50;
-  }
-  
-  .input-group input,
-  .input-group select {
-    width: 100%;
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .signup-button {
-    width: 100%;
-    padding: 10px;
-    font-size: 1.2rem;
-    background: #27ae60;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  
-  .signup-button:hover {
-    background: #219150;
-  }
-  
-  .error-message {
-    color: red;
-    font-size: 0.9rem;
-    margin-bottom: 10px;
-  }
-  
-  .success-message {
-    color: green;
-    font-size: 0.9rem;
-    margin-bottom: 10px;
-  }
-  
-  /* Responsive */
-  @media (max-width: 400px) {
-    .signup-box {
       width: 90%;
-    }
   }
-  
+}
