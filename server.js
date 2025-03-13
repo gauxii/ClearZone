@@ -6,6 +6,7 @@ const cors = require('cors');
 
 const authRoutes = require('./routes/authRoutes'); // Import authentication routes
 const wasteRoutes = require("./routes/wasteReports"); // Import waste routes
+const leaderboardRoutes = require("./routes/leaderboardRoutes"); // ✅ Import leaderboard routes
 
 const app = express();
 
@@ -22,6 +23,7 @@ mongoose.connect(process.env.MONGO_URI)
 // ✅ API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/waste", wasteRoutes);
+app.use("/api/leaderboard", leaderboardRoutes); // ✅ Add leaderboard route here
 
 // ✅ Start the Server
 const PORT = process.env.PORT || 5002;

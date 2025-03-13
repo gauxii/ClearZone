@@ -1,28 +1,34 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./CitizenDashboard.css"; // ✅ Import CSS file for styling
-import awarenessImage from "../assets/image.jpg"; // ✅ Import Awareness Image
+import "./CitizenDashboard.css";
+import awarenessImage from "../assets/image.jpg";
 
 function CitizenDashboard() {
   // ✅ State Variables
-  const [points, setPoints] = useState(0); // Reward points
-  const [reports, setReports] = useState([]); // List of reports
-  const [image, setImage] = useState(null); // Captured image
-  const [description, setDescription] = useState(""); // Waste description
-  const [location, setLocation] = useState(null); // User's location
-  const [showPopup, setShowPopup] = useState(false); // ✅ Popup state for reward points notification
-  const videoRef = useRef(null); // Reference for camera video
-  const navigate = useNavigate(); // Navigation hook
+  const [points, setPoints] = useState(0);
+  const [reports, setReports] = useState([]);
+  const [image, setImage] = useState(null);
+  const [description, setDescription] = useState("");
+  const [location, setLocation] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const [leaderboard, setLeaderboard] = useState([]);
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+
+  const videoRef = useRef(null);
+  const submissionsRef = useRef(null);
+  const rewardRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchReports(); // ✅ Fetch previous reports
-    fetchRewardPoints(); // ✅ Fetch user's reward points
-    startCamera(); // ✅ Start camera when the page loads
-    fetchLocation(); // ✅ Get user's current location
+    fetchReports();
+    fetchRewardPoints();
+    fetchLeaderboard();
+    startCamera();
+    fetchLocation();
   }, []);
 
-  // ✅ Fetch Reports from Database
+  // ✅ Fetch Reports
   const fetchReports = async () => {
     try {
       const response = await axios.get("http://localhost:5002/api/waste/my-reports", {
@@ -34,7 +40,19 @@ function CitizenDashboard() {
     }
   };
 
-  // ✅ Fetch Reward Points from Backend
+  // ✅ Fetch Leaderboard Data
+  const fetchLeaderboard = async () => {
+    try {
+      const response = await axios.get("http://localhost:5002/api/leaderboard", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+      setLeaderboard(response.data);
+    } catch (error) {
+      console.error("Error fetching leaderboard:", error);
+    }
+  };
+
+  // ✅ Fetch Reward Points
   const fetchRewardPoints = async () => {
     try {
       const response = await axios.get("http://localhost:5002/api/waste/reward-points", {
@@ -82,36 +100,20 @@ function CitizenDashboard() {
     setImage(canvas.toDataURL("image/png"));
   };
 
-  // ✅ Convert Data URL to Blob (for sending to backend)
-  function dataURItoBlob(dataURI) {
-    const byteString = atob(dataURI.split(",")[1]);
-    const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
-    const ab = new ArrayBuffer(byteString.length);
-    const ia = new Uint8Array(ab);
-    for (let i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i);
-    }
-    return new Blob([ab], { type: mimeString });
-  }
-
-  // ✅ Submit Waste Report & Show Reward Points Popup
+  // ✅ Submit Waste Report & Show Reward Popup
   const submitReport = async () => {
     if (!image || !description || !location) {
       alert("Please capture an image, enter a description, and allow location access.");
       return;
     }
 
-    // ✅ Prepare Form Data
     const formData = new FormData();
-    formData.append("image", dataURItoBlob(image), "waste.png");
+    formData.append("image", image);
     formData.append("description", description);
     formData.append("latitude", location.latitude);
     formData.append("longitude", location.longitude);
 
-    console.log("📤 Submitting FormData:", Object.fromEntries(formData.entries()));
-
     try {
-      // ✅ Send Report to Backend
       await axios.post("http://localhost:5002/api/waste/report", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -122,10 +124,10 @@ function CitizenDashboard() {
       alert("✅ Waste reported successfully!");
       setImage(null);
       setDescription("");
-      fetchReports(); // Refresh reports
-      fetchRewardPoints(); // Refresh reward points
+      fetchReports();
+      fetchRewardPoints();
+      fetchLeaderboard();
 
-      // ✅ Show reward popup for 3 seconds
       setShowPopup(true);
       setTimeout(() => {
         setShowPopup(false);
@@ -136,44 +138,62 @@ function CitizenDashboard() {
     }
   };
 
+  const leaderboardRef = useRef(null); // ✅ Reference for leaderboard section
+
+const toggleLeaderboard = async () => {
+  try {
+    if (!showLeaderboard) {
+      console.log("Fetching leaderboard data...");
+      const response = await axios.get("http://localhost:5002/api/leaderboard", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+      console.log("Leaderboard Data:", response.data);
+      setLeaderboard(response.data);
+    }
+    setShowLeaderboard((prev) => !prev);
+
+    // ✅ Scroll to Leadership Board if it's shown
+    setTimeout(() => {
+      leaderboardRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  } catch (error) {
+    console.error("❌ Error fetching leaderboard:", error);
+  }
+};
+
+
+  // ✅ Scroll to Sections
+  const scrollToSubmissions = () => {
+    submissionsRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const scrollToRewards = () => {
+    rewardRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   // ✅ Logout Function
   const handleLogout = () => {
-    localStorage.removeItem("token"); // ✅ Remove JWT Token
-    navigate("/login"); // ✅ Redirect to Login Page
+    localStorage.removeItem("token");
+    navigate("/login");
   };
 
   return (
     <div className="dashboard-container">
-      {/* ✅ Reward Popup (Centered) */}
       {showPopup && <div className="reward-popup">🎉 You got +10 points!</div>}
 
+      {/* ✅ Navigation Bar */}
       <nav className="navbar">
-        <button onClick={() => document.getElementById("submissions-section").scrollIntoView({ behavior: "smooth" })}>
-          View Latest Submissions
-        </button>
-        <button onClick={() => document.getElementById("reward-section").scrollIntoView({ behavior: "smooth" })}>
-          View Reward Points
-        </button>
-        <button className="logout-btn" onClick={handleLogout}>Logout</button> {/* ✅ Logout Button */}
+        <button onClick={scrollToSubmissions}>View Latest Submissions</button>
+        <button onClick={scrollToRewards}>View Reward Points</button>
+        <button onClick={toggleLeaderboard}>View Leadership Board</button>
+        <button className="logout-btn" onClick={handleLogout}>Logout</button>
       </nav>
 
-      {/* ✅ Awareness Section */}
-      <div className="awareness-section">
-        <div className="image-container">
-          <img src={awarenessImage} alt="Environmental Awareness" className="awareness-image" />
-        </div>
-        <p className="awareness-text">"ClearZone: Empowering Citizens for a Cleaner Community"</p>
-      </div>
-
-      {/* ✅ Waste Reporting Section */}
+      {/* ✅ Report Waste Section */}
       <div className="report-section">
         <h3>Report Waste</h3>
         {location && <p>📍 Location: {location.latitude}, {location.longitude}</p>}
-        <textarea
-          placeholder="Describe the waste location..."
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
+        <textarea placeholder="Describe the waste location..." value={description} onChange={(e) => setDescription(e.target.value)} />
         <div className="camera-section">
           <video ref={videoRef} autoPlay playsInline className="video-feed" />
           <button onClick={captureImage}>Capture Image</button>
@@ -182,10 +202,12 @@ function CitizenDashboard() {
         <button className="submit-btn" onClick={submitReport}>Submit Waste Report</button>
       </div>
 
-      {/* ✅ Latest Submissions Restored */}
-      <div id="submissions-section" className="latest-reports">
+      {/* ✅ Latest Submissions */}
+      <div ref={submissionsRef} className="latest-reports">
         <h3>Latest Submissions</h3>
-        {reports.length === 0 ? <p>No reports found.</p> : (
+        {reports.length === 0 ? (
+          <p>No reports found. Try submitting one!</p>
+        ) : (
           <table className="reports-table">
             <thead>
               <tr>
@@ -197,25 +219,66 @@ function CitizenDashboard() {
               </tr>
             </thead>
             <tbody>
-              {reports.map((report) => (
-                <tr key={report._id}>
+              {reports.map((report, index) => (
+                <tr key={index}>
                   <td>{report.description}</td>
-                  <td>{report.status}</td>
-                  <td>{report.assigned || "None"}</td>
+                  <td>{report.status || "Pending"}</td>
+                  <td>{report.assigned || "Not Assigned"}</td>
                   <td>{new Date(report.createdAt).toLocaleString()}</td>
-                  <td><img src={report.imageUrl} alt="Reported Waste" className="table-image" /></td>
+                  <td>
+                    {report.imageUrl ? (
+                      <img src={report.imageUrl} alt="Reported Waste" className="table-image" />
+                    ) : (
+                      "No Image"
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         )}
       </div>
+        {/* ✅ Reward Points Section (Restored) */}
+<div ref={rewardRef} className="reward-section">
+  <h3>Reward Points</h3>
+  <p>You currently have {points} points.</p>
+</div>
 
-      {/* ✅ Reward Points Section Restored */}
-      <div id="reward-section" className="reward-section">
-        <h3>Reward Points</h3>
-        <p>You currently have {points} points.</p>
-      </div>
+      {/* ✅ Leadership Board */}
+      <div ref={leaderboardRef} className="leaderboard-section">
+  <h3>Leadership Board 🏆</h3>
+  {leaderboard.length === 0 ? (
+    <p>No leaderboard data available.</p>
+  ) : (
+    <table className="leaderboard-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Name</th>
+          <th>Reward Points</th>
+        </tr>
+      </thead>
+      <tbody>
+        {leaderboard.map((user, index) => {
+          let rankClass = "";
+          if (index === 0) rankClass = "rank-1"; // Gold 🥇
+          else if (index === 1) rankClass = "rank-2"; // Silver 🥈
+          else if (index === 2) rankClass = "rank-3"; // Bronze 🥉
+
+          return (
+            <tr key={user._id} className={rankClass}>
+              <td>{index + 1}</td>
+              <td>{user.name || "No Name"}</td>
+              <td>{user.rewardPoints}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  )}
+</div>
+
+
     </div>
   );
 }
