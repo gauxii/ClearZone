@@ -136,6 +136,12 @@ function CitizenDashboard() {
     }
   };
 
+  // ✅ Logout Function
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // ✅ Remove JWT Token
+    navigate("/login"); // ✅ Redirect to Login Page
+  };
+
   return (
     <div className="dashboard-container">
       {/* ✅ Reward Popup (Centered) */}
@@ -148,9 +154,7 @@ function CitizenDashboard() {
         <button onClick={() => document.getElementById("reward-section").scrollIntoView({ behavior: "smooth" })}>
           View Reward Points
         </button>
-        <button onClick={() => document.getElementById("reward-section").scrollIntoView({ behavior: "smooth" })}>
-          View LeaderBoard
-        </button>
+        <button className="logout-btn" onClick={handleLogout}>Logout</button> {/* ✅ Logout Button */}
       </nav>
 
       {/* ✅ Awareness Section */}
@@ -161,23 +165,12 @@ function CitizenDashboard() {
         <p className="awareness-text">"ClearZone: Empowering Citizens for a Cleaner Community"</p>
       </div>
 
-      {/* ✅ Waste Reporting Section */}
-      <div className="report-section">
-        <h3>Report Waste</h3>
-        {location && <p>📍 Location: {location.latitude}, {location.longitude}</p>}
-        <textarea placeholder="Describe the waste location..." value={description} onChange={(e) => setDescription(e.target.value)} />
-        <div className="camera-section">
-          <video ref={videoRef} autoPlay playsInline className="video-feed" />
-          <button onClick={captureImage}>Capture Image</button>
-        </div>
-        {image && <img src={image} alt="Captured Waste" className="image-preview" />}
-        <button className="submit-btn" onClick={submitReport}>Submit Waste Report</button>
-      </div>
-
-      {/* ✅ Latest Submissions (Restored!) */}
+      {/* ✅ Latest Submissions Restored */}
       <div id="submissions-section" className="latest-reports">
         <h3>Latest Submissions</h3>
-        {reports.length === 0 ? <p>No reports found.</p> : (
+        {reports.length === 0 ? (
+          <p>No reports found.</p>
+        ) : (
           <table className="reports-table">
             <thead>
               <tr>
