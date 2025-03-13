@@ -165,12 +165,27 @@ function CitizenDashboard() {
         <p className="awareness-text">"ClearZone: Empowering Citizens for a Cleaner Community"</p>
       </div>
 
+      {/* ✅ Waste Reporting Section */}
+      <div className="report-section">
+        <h3>Report Waste</h3>
+        {location && <p>📍 Location: {location.latitude}, {location.longitude}</p>}
+        <textarea
+          placeholder="Describe the waste location..."
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        <div className="camera-section">
+          <video ref={videoRef} autoPlay playsInline className="video-feed" />
+          <button onClick={captureImage}>Capture Image</button>
+        </div>
+        {image && <img src={image} alt="Captured Waste" className="image-preview" />}
+        <button className="submit-btn" onClick={submitReport}>Submit Waste Report</button>
+      </div>
+
       {/* ✅ Latest Submissions Restored */}
       <div id="submissions-section" className="latest-reports">
         <h3>Latest Submissions</h3>
-        {reports.length === 0 ? (
-          <p>No reports found.</p>
-        ) : (
+        {reports.length === 0 ? <p>No reports found.</p> : (
           <table className="reports-table">
             <thead>
               <tr>
@@ -196,7 +211,7 @@ function CitizenDashboard() {
         )}
       </div>
 
-      {/* ✅ Reward Points Section */}
+      {/* ✅ Reward Points Section Restored */}
       <div id="reward-section" className="reward-section">
         <h3>Reward Points</h3>
         <p>You currently have {points} points.</p>
