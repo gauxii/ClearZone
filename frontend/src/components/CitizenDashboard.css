@@ -1,18 +1,18 @@
-/* General Dashboard Styles */
+/* ✅ Full-page background with a dark overlay */
 .dashboard-container {
-  font-family: Arial, sans-serif;
-  padding: 20px;
-  color: white;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background: url("../assets/backcitizen.jpg") no-repeat center center/cover; /* ✅ Background Image */
+  padding: 40px 20px;
   position: relative;
 }
 
-/* Overlay to improve readability */
+/* ✅ Lighter Overlay - Background Image More Visible */
 .dashboard-container::before {
   content: "";
   position: absolute;
@@ -20,261 +20,114 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.6); /* ✅ Dark overlay */
+  background: rgba(0, 0, 0, 0.2); /* 🔆 Reduced darkness (was 0.45, now 0.2) */
   z-index: -1;
 }
 
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 28px;
-}
 
-/* Navbar Styles */
-.navbar {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  background-color: rgba(0, 0, 0, 0.8);
-  padding: 10px;
+
+
+/* ✅ Glassmorphic section boxes */
+.section-box {
+  position: relative;
+  z-index: 2;
+  background: rgba(20, 20, 20, 0.85);
+  border-radius: 15px;
+  padding: 30px;
   width: 100%;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.navbar button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-  font-size: 16px;
-  transition: background 0.3s ease;
-}
-
-.navbar button:hover {
-  background-color: #45a049;
-}
-
-/* Section Styling */
-.upload-section,
-.reward-section,
-.feedback-section,
-.leaderboard-section,
-.latest-reports {
-  background-color: rgba(0, 0, 0, 0.7);
-  padding: 20px;
-  margin: 20px 0;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 800px;
-  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
-}
-
-h3 {
+  max-width: 900px;
+  box-shadow: 0px 0px 15px rgba(0, 255, 170, 0.4);
   text-align: center;
-  color: black;
-  font-size: 22px;
-  margin-bottom: 15px;
+  border: 1px solid rgba(0, 255, 170, 0.3);
+  animation: fadeInUp 1s ease-out;
 }
 
-/* Button Styles */
+/* ✅ Title Styles */
+h3 {
+  color: #0aff9d;
+  font-size: 24px;
+  font-weight: bold;
+  text-shadow: 0px 0px 5px rgba(0, 255, 170, 0.7);
+}
+
+/* ✅ Buttons */
 button {
-  background-color: #4CAF50;
-  color: white;
+  background: linear-gradient(135deg, #0aff9d, #007d65);
+  color: black;
   padding: 12px;
   border: none;
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 16px;
-  width: 100%;
-  max-width: 250px;
-  transition: all 0.3s;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+  text-transform: uppercase;
+  box-shadow: 0px 0px 10px rgba(0, 255, 170, 0.5);
 }
 
 button:hover {
-  background-color: #45a049;
+  background: linear-gradient(135deg, #0aff9d, #00cc99);
   transform: scale(1.05);
 }
 
-/* Awareness Section */
-.awareness-section {
-  text-align: center;
-  padding: 20px;
-  margin-bottom: 20px;
-  background-color: rgba(0, 0, 0, 0.5);
-  border-radius: 10px;
-  width: 90%;
-  max-width: 800px;
-}
-
-.awareness-image {
-  width: 100%;
-  max-width: 400px;
-  border-radius: 10px;
-  margin: 10px 0;
-}
-
-/* Form Fields */
+/* ✅ Form Fields */
 textarea,
 input {
   width: 100%;
   padding: 12px;
-  margin-top: 8px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  background-color: #2a2a2a;
-  color: white;
+  border: 1px solid #0aff9d;
+  border-radius: 8px;
   font-size: 16px;
-}
-
-/* Camera Section */
-.camera-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.video-feed {
-  width: 100%;
-  max-width: 400px;
-  height: auto;
-  border-radius: 8px;
-  border: 2px solid #4CAF50;
-}
-
-/* Image Preview */
-.image-preview img {
-  max-width: 100%;
-  border-radius: 8px;
-  margin-top: 15px;
-  border: 2px solid #4CAF50;
-}
-
-/* Latest Reports */
-.latest-reports ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-.latest-reports li {
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 15px;
-  margin: 10px 0;
-  border-radius: 6px;
-  color: white;
-  border-left: 5px solid #4CAF50;
-  box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
-}
-
-.report-image {
-  max-width: 100%;
-  height: auto;
-  border-radius: 6px;
-  margin-top: 10px;
-  border: 2px solid #ccc;
-}
-
-/* Reward Section */
-.reward-section {
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #0aff9d;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
   text-align: center;
 }
 
-.reward-section p {
-  font-size: 18px;
-  font-weight: bold;
+input:focus,
+textarea:focus {
+  border-color: #0aff9d;
+  outline: none;
+  box-shadow: 0px 0px 8px rgba(0, 255, 170, 0.8);
 }
-/* ✅ Table Styling - Made smaller */
+
+/* ✅ Table Styles */
 .reports-table {
-  width: 80%; /* Reduced table width */
-  max-width: 700px; /* Decreased max width */
+  width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
-  background-color: rgba(0, 0, 0, 0.8);
-  border-radius: 10px;
+  margin-top: 15px;
+  background: rgba(0, 0, 0, 0.9);
+  border-radius: 12px;
   overflow: hidden;
+  box-shadow: 0px 0px 15px rgba(0, 255, 170, 0.3);
 }
 
 /* ✅ Table Headers & Cells */
-.reports-table th, .reports-table td {
-  padding: 8px; /* Reduced padding */
-  font-size: 14px; /* Decreased font size */
+.reports-table th,
+.reports-table td {
+  padding: 10px;
+  font-size: 16px;
   text-align: center;
   color: white;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .reports-table th {
-  background-color: #4CAF50;
-  color: white;
+  background: linear-gradient(135deg, #0aff9d, #007d65);
+  color: black;
   font-weight: bold;
 }
 
 /* ✅ Reduce Image Size Inside Table */
 .table-image {
-  width: 50px; /* Decreased image width */
-  height: 50px; /* Decreased image height */
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  border: 1px solid #0aff9d;
+  object-fit: cover;
 }
 
-/* ✅ Hover Effect */
-.reports-table tr:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-/* ✅ Reward Popup - Centered */
-.popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); /* ✅ Center the popup */
-  background: rgba(76, 175, 80, 0.95); /* ✅ Slightly transparent green */
-  color: white;
-  padding: 15px 30px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-  font-weight: bold;
-  font-size: 18px;
-  text-align: center;
-  z-index: 1000;
-  width: 250px; /* ✅ Fixed width */
-  height: 100px; /* ✅ Fixed height */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 1; /* ✅ Ensure visibility */
-  transition: opacity 0.5s ease-in-out; /* ✅ Smooth fade-out effect */
-}
-
-/* ✅ Hide Popup After Animation */
-.popup.hidden {
-  opacity: 0;
-}
-/* ✅ Reward Popup - Centered */
-.reward-popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(76, 175, 80, 0.95);
-  color: white;
-  padding: 15px 30px;
-  border-radius: 10px;
-  font-weight: bold;
-  font-size: 18px;
-  text-align: center;
-  z-index: 1000;
-  width: 250px;
-  height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 1;
-  transition: opacity 0.5s ease-in-out;
-}
+/* ✅ Leaderboard Section */
 .leaderboard-section {
   margin-top: 30px;
   padding: 20px;
@@ -285,12 +138,16 @@ input {
   color: white;
 }
 
+/* ✅ Leaderboard Table */
 .leaderboard-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
+/* ✅ Leaderboard Table Styling */
 .leaderboard-table th,
 .leaderboard-table td {
   padding: 12px 15px;
@@ -305,6 +162,7 @@ input {
   text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.7);
 }
 
+/* ✅ Leaderboard Row Colors */
 .leaderboard-table tr:nth-child(even) {
   background: rgba(255, 255, 255, 0.1);
 }
@@ -313,10 +171,12 @@ input {
   background: rgba(0, 0, 0, 0.5);
 }
 
+/* ✅ Leaderboard Hover Effect */
 .leaderboard-table tr:hover {
   background: rgba(0, 255, 170, 0.2);
 }
 
+/* ✅ Rank Styling */
 .rank-1 {
   background: linear-gradient(135deg, gold, yellow);
   font-weight: bold;
@@ -334,4 +194,70 @@ input {
   font-weight: bold;
   color: white;
 }
+/* ✅ Navbar - Glassmorphic Styled */
+/* ✅ Modern Glassmorphic Navbar */
+.navbar {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  padding: 10px;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.1); /* ✅ Transparent glassmorphic background */
+  backdrop-filter: blur(10px); /* ✅ Blur effect */
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 255, 170, 0.3);
+}
 
+/* ✅ Navbar Button Styling - Even Size */
+.navbar button {
+  background: linear-gradient(135deg, #0aff9d, #007d65);
+  color: black;
+  padding: 12px 20px;  /* ✅ Uniform padding */
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 0px 10px rgba(0, 255, 170, 0.5);
+  width: 180px; /* ✅ Fixed button width */
+  text-align: center;
+}
+
+/* ✅ Hover Effect */
+.navbar button:hover {
+  background: linear-gradient(135deg, #0aff9d, #00cc99);
+  transform: scale(1.05);
+}
+
+/* ✅ Responsive Fix for Smaller Screens */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .navbar button {
+    width: 100%; /* ✅ Full width on small screens */
+    max-width: 250px;
+  }
+}
+
+
+
+/* ✅ Smooth Slide-in Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

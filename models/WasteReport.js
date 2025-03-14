@@ -11,7 +11,8 @@ const WasteReportSchema = new mongoose.Schema({
   status: { type: String, enum: ['pending', 'in progress', 'resolved'], default: 'pending' },
   assigned: { type: String, default: 'none' }, // Tracks assigned workers (default: none)
   pointsEarned: { type: Number, default: 10 }, // ✅ Citizens earn 10 points per report
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
+  assignedWorker: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null } // ✅ Assign worker
 });
 
 module.exports = mongoose.model('WasteReport', WasteReportSchema);
