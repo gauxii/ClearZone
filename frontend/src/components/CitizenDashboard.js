@@ -113,38 +113,49 @@ function CitizenDashboard() {
       alert("Please capture an image, enter a description, and allow location access.");
       return;
     }
+  
+    // Convert Base64 to Blob
     const blob = base64ToBlob(image, "image/png");
     const file = new File([blob], "waste.png", { type: "image/png" });
+  
+    // Create FormData
     const formData = new FormData();
     formData.append("image", file);
     formData.append("description", description);
     formData.append("latitude", location.latitude);
     formData.append("longitude", location.longitude);
-
+  
     try {
-      await axios.post("http://localhost:5002/api/waste/report", formData, {
+      const response = await axios.post("http://localhost:5002/api/waste/report", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-
-      alert("✅ Waste reported successfully!");
-      setImage(null);
-      setDescription("");
-      fetchReports();
-      fetchRewardPoints();
-      fetchLeaderboard();
-
-      setShowPopup(true);
-      setTimeout(() => {
-        setShowPopup(false);
-      }, 3000);
+  
+      if (response.status === 200 || response.status === 201) {
+        alert("✅ Waste reported successfully!");
+  
+        // ✅ Ensure showPopup is updated
+        setShowPopup(true);
+        setTimeout(() => {
+          setShowPopup(false);
+        }, 3000);
+  
+        setImage(null);
+        setDescription("");
+        fetchReports();
+        fetchRewardPoints();
+        fetchLeaderboard();
+      } else {
+        throw new Error("Unexpected response status");
+      }
     } catch (error) {
       console.error("❌ Error submitting report:", error.response?.data || error);
       alert("❌ Failed to report waste. Please try again.");
     }
   };
+  
 
   const leaderboardRef = useRef(null); // ✅ Reference for leaderboard section
 
@@ -187,7 +198,7 @@ const toggleLeaderboard = async () => {
 
   return (
     <div className="dashboard-container">
-      {showPopup && <div className="reward-popup">🎉 You got +10 points!</div>}
+    {showPopup && <div className="reward-popup">🎉 You got +10 points!</div>}
 
       {/* ✅ Navigation Bar */}
       <nav className="navbar">
