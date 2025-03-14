@@ -99,16 +99,24 @@ function CitizenDashboard() {
     ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
     setImage(canvas.toDataURL("image/png"));
   };
-
+  const base64ToBlob = (base64, mimeType) => {
+    const byteCharacters = atob(base64.split(",")[1]);
+    const byteArrays = [];
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteArrays.push(byteCharacters.charCodeAt(i));
+    }
+    return new Blob([new Uint8Array(byteArrays)], { type: mimeType });
+  };
   // ✅ Submit Waste Report & Show Reward Popup
   const submitReport = async () => {
     if (!image || !description || !location) {
       alert("Please capture an image, enter a description, and allow location access.");
       return;
     }
-
+    const blob = base64ToBlob(image, "image/png");
+    const file = new File([blob], "waste.png", { type: "image/png" });
     const formData = new FormData();
-    formData.append("image", image);
+    formData.append("image", file);
     formData.append("description", description);
     formData.append("latitude", location.latitude);
     formData.append("longitude", location.longitude);

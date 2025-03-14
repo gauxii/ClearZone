@@ -24,7 +24,6 @@ const storage = new CloudinaryStorage({
     allowed_formats: ['jpg', 'jpeg', 'png']
   }
 });
-
 const upload = multer({ storage });
 
 // ✅ Report Waste & Update Reward Points
@@ -40,22 +39,42 @@ router.post('/report', authMiddleware, upload.single('image'), async (req, res) 
       return res.status(400).json({ error: 'Image upload is required' });
     }
 
-    // ✅ Create and save the waste report with points earned
+    if (!description || !latitude || !longitude) {
+      return res.status(400).json({ error: 'Description and location are required.' });
+    }
+
+    // ✅ Ensure latitude & longitude are valid numbers
+    const lat = parseFloat(latitude);
+    const lon = parseFloat(longitude);
+    if (isNaN(lat) || isNaN(lon)) {
+      return res.status(400).json({ error: 'Invalid latitude or longitude.' });
+    }
+
+    // ✅ Create and save the waste report
     const wasteReport = new WasteReport({
       userId: req.user.id,
       description,
       imageUrl: req.file.path,
-      location: { latitude, longitude },
+      location: { latitude: lat, longitude: lon },
       assigned: 'none',
       pointsEarned: 10  // ✅ Citizens earn 10 points per report
     });
 
     await wasteReport.save();
 
-    // ✅ Update user's total reward points
-    await User.findByIdAndUpdate(req.user.id, { $inc: { rewardPoints: 10 } });
+    // ✅ Update user's total reward points and return the new value
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user.id,
+      { $inc: { rewardPoints: 10 } },
+      { new: true } // ✅ Ensures the updated value is returned
+    );
 
-    res.status(201).json({ message: '✅ Waste reported successfully!', wasteReport });
+    res.status(201).json({ 
+      message: '✅ Waste reported successfully!', 
+      wasteReport, 
+      newRewardPoints: updatedUser.rewardPoints 
+    });
+
   } catch (err) {
     console.error('❌ Waste Report Error:', err);
     res.status(500).json({ error: 'Server Error', details: err.message });
@@ -79,7 +98,10 @@ router.get('/my-reward-points', authMiddleware, async (req, res) => {
 // ✅ Get All Waste Reports
 router.get('/all-reports', authMiddleware, async (req, res) => {
   try {
-    const reports = await WasteReport.find().populate('userId', 'email');
+    const reports = await WasteReport.find()
+      .populate('userId', 'name email')
+      .sort({ createdAt: -1 });
+
     res.status(200).json(reports);
   } catch (err) {
     console.error('❌ Fetch Reports Error:', err);
@@ -100,6 +122,7 @@ router.get('/my-reports', authMiddleware, async (req, res) => {
     res.status(500).json({ error: 'Server Error', details: err.message });
   }
 });
+
 // ✅ Fetch Reward Points for Logged-in User
 router.get('/reward-points', authMiddleware, async (req, res) => {
   try {
@@ -113,6 +136,5 @@ router.get('/reward-points', authMiddleware, async (req, res) => {
     res.status(500).json({ error: "Server Error", details: error.message });
   }
 });
-
 
 module.exports = router;
