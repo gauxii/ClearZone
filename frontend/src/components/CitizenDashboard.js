@@ -54,17 +54,18 @@ function CitizenDashboard() {
     }
   };
 
-  // ✅ Fetch Reward Points
   const fetchRewardPoints = async () => {
     try {
       const response = await axios.get("http://localhost:5002/api/waste/reward-points", {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
+      console.log("Reward Points Data:", response.data); // Debugging line
       setPoints(response.data.rewardPoints);
     } catch (error) {
       console.error("Error fetching reward points:", error);
     }
   };
+  
 
   // ✅ Get User's Location
   const fetchLocation = () => {
@@ -280,11 +281,17 @@ const toggleLeaderboard = async () => {
           </table>
         )}
       </div>
-        {/* ✅ Reward Points Section (Restored) */}
+        {/* ✅ Reward Points Section (Enhanced) */}
 <div ref={rewardRef} className="reward-section">
   <h3>Reward Points</h3>
-  <p>You currently have {points} points.</p>
+  <p>You currently have <span className="points">{points}</span> points.</p>
+  <p className="reward-info">
+    🎯 Earn points by reporting waste!  
+    🏆 Higher points increase your ranking on the leadership board.  
+    🔄 Keep contributing to make our city cleaner!  
+  </p>
 </div>
+
 
       {/* ✅ Leadership Board */}
       <div ref={leaderboardRef} className="leaderboard-section">

@@ -296,42 +296,40 @@ textarea:focus {
 }
 /* ✅ Latest Reports Table - Wider & Centered */
 .latest-reports {
-  width: 80%; /* 🔹 Increase table width */
-  max-width: 600px; /* 🔹 Set a maximum width */
-  margin: 20px auto; /* 🔹 Centers the table */
+  width: 90%;
+  max-width: 900px;
+  margin: 20px auto;
   border-collapse: collapse;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.8); /* ✅ Made it duller (was 0.7) */
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0px 0px 10px rgba(0, 255, 170, 0.2);
+  box-shadow: 0px 0px 10px rgba(0, 255, 170, 0.15); /* ✅ Reduced glow */
   font-size: 14px;
-  text-align: center; /* 🔹 Centers text */
+  text-align: center;
 }
 
-/* ✅ Table Headers & Cells */
-.latest-reports th,
+/* ✅ Make table cells flexible */
+.latest-reports th, 
 .latest-reports td {
-  padding: 10px; /* 🔹 Slightly increased padding for readability */
+  min-width: 120px; /* Ensure columns have a base width */
+  padding: 12px;
   text-align: center;
   color: white;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  word-wrap: break-word; /* Prevents text overflow */
+  white-space: nowrap; /* Prevents too much shrinking */
 }
 
-/* ✅ Table Header Styling */
-.latest-reports th {
-  background: linear-gradient(135deg, #0aff9d, #007d65);
-  color: black;
-  font-weight: bold;
-}
 
 /* ✅ Slightly Bigger Image */
 .latest-reports img {
-  width: 50px; /* 🔹 Increased size */
-  height: 50px;
+  width: 60px; /* 🔹 Increased from 50px to 60px */
+  height: 60px;
   border-radius: 5px;
   object-fit: cover;
   border: 1px solid #0aff9d;
 }
+
 
 /* ✅ Centering the Table Inside a Container */
 .table-container {
@@ -339,6 +337,61 @@ textarea:focus {
   justify-content: center;
   align-items: center;
   width: 100%;
+}
+.latest-reports h3 {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  color: #2E7D32; /* ✅ Dark green text */
+  background-color: #e8f5e9; /* ✅ Light green background */
+  padding: 10px;
+  border-radius: 8px;
+  width: fit-content;
+  margin: 20px auto; /* ✅ Centers the heading */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* ✅ Light shadow */
+}
+/* ✅ Reward Points Section - Matching Report Waste Theme */
+.reward-section {
+  background-color: #fdece7;
+  color: #2E7D32; /* Matching Report Waste theme */
+  padding: 20px;
+  border: 2px solid #2E7D32; /* Border to match theme */
+  border-radius: 10px;
+  text-align: center;
+  margin: 20px auto;
+  width: 50%;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.reward-section h3 {
+  font-size: 24px;
+  color: #2E7D32; /* Heading in theme color */
+  margin-bottom: 10px;
+}
+
+.reward-section p {
+  font-size: 20px;
+  font-weight: bold;
+  background: rgba(240, 78, 48, 0.1);
+  padding: 10px;
+  border-radius: 5px;
+  display: inline-block;
+}
+.points {
+  font-size: 22px;
+  font-weight: bold;
+  color: #ff5733; /* Slightly different shade for emphasis */
+}
+.reward-info {
+  font-size: 16px;
+  color: #555;
+  font-weight: normal;
+  background: rgba(240, 78, 48, 0.1);
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+  display: inline-block;
+  text-align: left;
 }
 
 
