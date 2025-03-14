@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./CitizenDashboard.css";
 import awarenessImage from "../assets/image.jpg";
+import backImage from "../assets/citizenback.jpg";
+
 
 function CitizenDashboard() {
   // ✅ State Variables
@@ -113,49 +115,38 @@ function CitizenDashboard() {
       alert("Please capture an image, enter a description, and allow location access.");
       return;
     }
-  
-    // Convert Base64 to Blob
     const blob = base64ToBlob(image, "image/png");
     const file = new File([blob], "waste.png", { type: "image/png" });
-  
-    // Create FormData
     const formData = new FormData();
     formData.append("image", file);
     formData.append("description", description);
     formData.append("latitude", location.latitude);
     formData.append("longitude", location.longitude);
-  
+
     try {
-      const response = await axios.post("http://localhost:5002/api/waste/report", formData, {
+      await axios.post("http://localhost:5002/api/waste/report", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-  
-      if (response.status === 200 || response.status === 201) {
-        alert("✅ Waste reported successfully!");
-  
-        // ✅ Ensure showPopup is updated
-        setShowPopup(true);
-        setTimeout(() => {
-          setShowPopup(false);
-        }, 3000);
-  
-        setImage(null);
-        setDescription("");
-        fetchReports();
-        fetchRewardPoints();
-        fetchLeaderboard();
-      } else {
-        throw new Error("Unexpected response status");
-      }
+
+      alert("✅ Waste reported successfully!");
+      setImage(null);
+      setDescription("");
+      fetchReports();
+      fetchRewardPoints();
+      fetchLeaderboard();
+
+      setShowPopup(true);
+      setTimeout(() => {
+        setShowPopup(false);
+      }, 3000);
     } catch (error) {
       console.error("❌ Error submitting report:", error.response?.data || error);
       alert("❌ Failed to report waste. Please try again.");
     }
   };
-  
 
   const leaderboardRef = useRef(null); // ✅ Reference for leaderboard section
 
@@ -198,15 +189,30 @@ const toggleLeaderboard = async () => {
 
   return (
     <div className="dashboard-container">
-    {showPopup && <div className="reward-popup">🎉 You got +10 points!</div>}
+      {showPopup && <div className="reward-popup">🎉 You got +10 points!</div>}
 
-      {/* ✅ Navigation Bar */}
       <nav className="navbar">
-        <button onClick={scrollToSubmissions}>View Latest Submissions</button>
-        <button onClick={scrollToRewards}>View Reward Points</button>
-        <button onClick={toggleLeaderboard}>View Leadership Board</button>
-        <button className="logout-btn" onClick={handleLogout}>Logout</button>
-      </nav>
+  {/* Left Side: Logo + Website Name */}
+  <div className="logo-container">
+    <img src={require("../assets/clearzonelogo.jpg")} alt="ClearZone Logo" className="logo" />
+    <span className="site-name">ClearZone</span>
+  </div>
+
+  {/* Center: Nav Items */}
+  <div className="nav-items">
+    <span className="nav-item" onClick={scrollToSubmissions}>View Latest Submissions</span>
+    <span className="nav-item" onClick={scrollToRewards}>View Reward Points</span>
+    <span className="nav-item" onClick={toggleLeaderboard}>View Leadership Board</span>
+  </div>
+
+  <div className="nav-right">
+    <button className="logout-btn" onClick={handleLogout}>Logout</button>
+  </div>
+</nav>
+
+
+
+
 
       {/* ✅ Report Waste Section */}
       <div className="report-section">
