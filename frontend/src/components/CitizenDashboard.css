@@ -119,18 +119,23 @@ input {
   margin-left: 80px; /* Adjust this value to move it slightly left */
 }
 
+
 .logout-btn {
   background-color: #FF6347;
   color: white;
   font-size: 16px;
   font-weight: bold;
-  padding: 10px 20px; /* Ensure padding is sufficient */
+  padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  display: inline-block; /* Ensure proper size */
+  display: inline-flex; /* Ensures the button wraps around the text */
+  align-items: center;
+  justify-content: center;
+  width: auto; /* Prevents it from shrinking */
   transition: background-color 0.3s ease, transform 0.2s;
 }
+
 
 
 .logout-btn:hover {
