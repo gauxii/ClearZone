@@ -210,22 +210,39 @@ const toggleLeaderboard = async () => {
   </div>
 </nav>
 
+<div className="hero-section">
+  <img src={require("../assets/image.jpg")} alt="Helping Citizens" className="hero-image" />
+  <div className="hero-text">
+    <h1>Making Our Cities Cleaner</h1>
+    <p>
+      ClearZone is a community-driven initiative that empowers citizens to report waste accumulation areas.  
+      By doing so, municipal workers can efficiently address these issues, ensuring cleaner streets and a healthier environment.  
+      Our reward-based system encourages public participation and awareness, promoting responsible waste disposal.  
+      Join us in creating a greener, more sustainable city for future generations.
+    </p>
+  </div>
+</div>
 
 
 
 
-      {/* ✅ Report Waste Section */}
-      <div className="report-section">
-        <h3>Report Waste</h3>
-        {location && <p>📍 Location: {location.latitude}, {location.longitude}</p>}
-        <textarea placeholder="Describe the waste location..." value={description} onChange={(e) => setDescription(e.target.value)} />
-        <div className="camera-section">
-          <video ref={videoRef} autoPlay playsInline className="video-feed" />
-          <button onClick={captureImage}>Capture Image</button>
-        </div>
-        {image && <img src={image} alt="Captured Waste" className="image-preview" />}
-        <button className="submit-btn" onClick={submitReport}>Submit Waste Report</button>
-      </div>
+    {/* ✅ Report Waste Section */}
+<div className="report-section">
+  <h3 className="report-waste-heading">Report Waste</h3>
+  {location && (
+    <div className="location-box">
+      📍 Location: {location.latitude}, {location.longitude}
+    </div>
+  )}
+  <textarea placeholder="Describe the waste location..." value={description} onChange={(e) => setDescription(e.target.value)} />
+  <div className="camera-section">
+    <video ref={videoRef} autoPlay playsInline className="video-feed" />
+    <button onClick={captureImage}>Capture Image</button>
+  </div>
+  {image && <img src={image} alt="Captured Waste" className="image-preview" />}
+  <button className="submit-btn" onClick={submitReport}>Submit Waste Report</button>
+</div>
+
 
       {/* ✅ Latest Submissions */}
       <div ref={submissionsRef} className="latest-reports">
