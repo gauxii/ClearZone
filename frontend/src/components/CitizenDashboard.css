@@ -218,8 +218,42 @@ input {
   margin: 0 auto 15px auto; /* Center align */
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Light shadow */
 }
+.camera-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center elements horizontally */
+  justify-content: center;
+  margin-top: 15px;
+}
+.video-feed {
+  width: 100%;
+  max-width: 400px; /* Adjust as needed */
+  border: 2px solid #ccc;
+  border-radius: 10px;
+}
+.image-preview {
+  display: block;
+  max-width: 100%;
+  width: 300px;
+  margin: 15px auto;
+  border-radius: 10px;
+}
+button {
+  display: block;
+  margin: 10px auto; /* Centers buttons */
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #28a745; /* Green color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
-
+button:hover {
+  background-color: #218838;
+}
 input:focus,
 textarea:focus {
   border-color: #2196F3;

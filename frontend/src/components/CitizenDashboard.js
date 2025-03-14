@@ -226,8 +226,8 @@ const toggleLeaderboard = async () => {
 
 
 
-    {/* ✅ Report Waste Section */}
-<div className="report-section">
+      {/* ✅ Report Waste Section */}
+      <div className="report-section">
   <h3 className="report-waste-heading">Report Waste</h3>
   {location && (
     <div className="location-box">
