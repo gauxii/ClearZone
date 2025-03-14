@@ -294,8 +294,13 @@ const toggleLeaderboard = async () => {
 
 
       {/* ✅ Leadership Board */}
-      <div ref={leaderboardRef} className="leaderboard-section">
+<div ref={leaderboardRef} className="leaderboard-section">
   <h3>Leadership Board 🏆</h3>
+  <p className="leaderboard-description">
+    The top contributors who actively report waste and help keep the environment clean are ranked here. 
+    Earn more reward points by making meaningful contributions!
+  </p>
+  
   {leaderboard.length === 0 ? (
     <p>No leaderboard data available.</p>
   ) : (

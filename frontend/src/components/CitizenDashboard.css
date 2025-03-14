@@ -264,20 +264,44 @@ textarea:focus {
 /* ✅ Reward Popup */
 .reward-popup {
   position: fixed;
-  top: 15%;
+  top: 20%; /* Adjusted for better positioning */
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(33, 150, 243, 0.9); /* ✅ Softer blue */
+  background: #2E7D32; /* ✅ Softer blue */
   color: white;
-  padding: 20px 35px;
-  font-size: 16px;
+  padding: 30px 50px; /* Increased padding */
+  font-size: 18px; /* Slightly larger text */
   font-weight: 600;
-  border-radius: 8px;
-  box-shadow: 0px 4px 10px rgba(21, 101, 192, 0.5);
+  border-radius: 12px; /* Slightly more rounded corners */
+  box-shadow: 0px 6px 14px rgba(21, 101, 192, 0.5);
   text-align: center;
   z-index: 200;
   animation: fadeInPopup 0.5s ease-in-out;
+  width: 350px; /* Increased width */
+  max-width: 90%; /* Ensures responsiveness */
 }
+
+/* ✅ Popup Animation */
+@keyframes fadeInPopup {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* ✅ Responsive Adjustments */
+@media (max-width: 600px) {
+  .reward-popup {
+    width: 90%;
+    padding: 25px 30px;
+    font-size: 16px;
+  }
+}
+
 
 /* ✅ Navbar */
 .navbar {
@@ -392,6 +416,72 @@ textarea:focus {
   margin-top: 10px;
   display: inline-block;
   text-align: left;
+}
+/* ✅ Leadership Board Section */
+.leaderboard-section {
+  background: linear-gradient(to bottom, #e6e6e6, #d9d9d9); /* Subtle dull yet bright gradient */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  margin-top: 30px;
+}
+
+.leaderboard-section h3 {
+  font-size: 22px;
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* ✅ Leaderboard Table */
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.leaderboard-table th, .leaderboard-table td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.leaderboard-table th {
+  background-color: #4CAF50; /* Report Waste theme color */
+  color: white;
+  font-weight: bold;
+}
+
+.leaderboard-table tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* ✅ Ranking Colors */
+.rank-1 {
+  background-color: #ffd700; /* Gold */
+  font-weight: bold;
+}
+
+.rank-2 {
+  background-color: #c0c0c0; /* Silver */
+  font-weight: bold;
+}
+
+.rank-3 {
+  background-color: #cd7f32; /* Bronze */
+  font-weight: bold;
+}
+
+/* ✅ Responsive Design */
+@media (max-width: 768px) {
+  .leaderboard-table th, .leaderboard-table td {
+    padding: 8px;
+    font-size: 14px;
+  }
 }
 
 
