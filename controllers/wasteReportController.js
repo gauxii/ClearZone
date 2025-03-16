@@ -100,7 +100,7 @@ exports.getAllReports = async (req, res) => {
 
 
 
-exports.getWorkerById = async (req, res) => {
+exports.getWasteReportsByWorkerId = async (req, res) => {
     try {
         const { workerId } = req.params;
 
@@ -109,14 +109,16 @@ exports.getWorkerById = async (req, res) => {
             return res.status(400).json({ success: false, error: "Invalid Worker ID" });
         }
 
-        const worker = await Worker.findById(workerId);
-        if (!worker) {
-            return res.status(404).json({ success: false, error: "Worker not found" });
+        // ✅ Find all waste reports assigned to the given workerId
+        const wasteReports = await WasteReport.find({ assigned: workerId });
+
+        if (!wasteReports.length) {
+            return res.status(404).json({ success: false, error: "No waste reports found for this worker" });
         }
 
-        res.status(200).json({ success: true, worker });
+        res.status(200).json({ success: true, wasteReports });
     } catch (error) {
-        console.error("❌ Worker Fetch Error:", error);
+        console.error("❌ Error fetching waste reports:", error);
         res.status(500).json({ success: false, error: "Server Error", details: error.message });
     }
 };

@@ -35,10 +35,10 @@ function LoginPage() {
       if (response.ok) {
         localStorage.setItem("token", data.token);
         localStorage.setItem("name", data.name); 
-        localStorage.setItem("workerId", data.employeeId); // ✅ Fix: Save `identifier` instead of `_id`
+        localStorage.setItem("workerId", data._id); // ✅ Fix: Save `identifier` instead of `_id`
   
         console.log("🔑 Token:", data.token);
-        console.log("👤 Identifier:", data.identifier);
+        console.log("👤 Identifier:", data._id);
   
         const redirectPath =
           role === "user"

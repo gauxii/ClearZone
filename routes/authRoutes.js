@@ -56,8 +56,9 @@ router.post('/login/worker', async (req, res) => {
     res.status(200).json({ 
       message: '✅ Worker login successful', 
       token, 
+      _id: worker._id,  // ✅ Added _id to response
       name: worker.name, 
-      employeeId: worker.employeeId // 🔹 Now included
+      employeeId: worker.employeeId 
     });
   } catch (err) {
     console.error('❌ Login Error:', err);
