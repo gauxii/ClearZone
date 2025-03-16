@@ -122,7 +122,53 @@ exports.getWasteReportsByWorkerId = async (req, res) => {
         res.status(500).json({ success: false, error: "Server Error", details: error.message });
     }
 };
-  
+exports.completeTaskWithImage = async (req, res) => {
+    try {
+        const workerId = req.user.id; // Get worker ID from auth token
+
+        console.log("🔹 Worker Completing Task:", workerId);
+        console.log("🔹 Uploaded File:", req.file?.path || "No file uploaded");
+
+        // ✅ Ensure an image was uploaded
+        if (!req.file) {
+            return res.status(400).json({ success: false, error: "Completion image is required." });
+        }
+
+        // ✅ Find the assigned task for this worker
+        const wasteReport = await WasteReport.findOne({
+            assigned: workerId,
+            status: "assigned"
+        });
+
+        if (!wasteReport) {
+            return res.status(404).json({ success: false, error: "No assigned task found for this worker." });
+        }
+
+        // ✅ Save Cloudinary completed image URL to the report
+        wasteReport.status = "completed";
+        wasteReport.completedImage = req.file.path; // ✅ Cloudinary image URL
+        await wasteReport.save();
+
+        // ✅ Free up the worker and add them back to the queue
+        const worker = await Worker.findByIdAndUpdate(
+            workerId,
+            { status: "available" },
+            { new: true }
+        );
+
+        console.log(`✅ Worker ${worker?.name} is now available again.`);
+
+        res.status(200).json({
+            success: true,
+            message: "Task completed successfully!",
+            updatedReport: wasteReport
+        });
+
+    } catch (error) {
+        console.error("❌ Task Completion Error:", error);
+        res.status(500).json({ success: false, error: "Server Error", details: error.message });
+    }
+};
 // ✅ Fetch Reports Created by Logged-in User
 exports.getMyReports = async (req, res) => {
     try {

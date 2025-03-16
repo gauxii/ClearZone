@@ -3,7 +3,7 @@ const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const authMiddleware = require('../middleware/authMiddleware');
-const wasteReportController = require('../controllers/wasteReportController'); // ✅ Import controller functions
+const wasteReportController = require('../controllers/wasteReportController');
 
 require('dotenv').config();
 
@@ -16,23 +16,36 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// ✅ Multer Storage for Cloudinary
-const storage = new CloudinaryStorage({
+// ✅ Multer Storage for Waste Report Images
+const reportStorage = new CloudinaryStorage({
   cloudinary,
   params: {
-    folder: 'waste_reports',
+    folder: 'waste_reports', // 🔹 Keep original waste report images here
     allowed_formats: ['jpg', 'jpeg', 'png']
   }
 });
 
-const upload = multer({ storage });
+// ✅ Multer Storage for Completed Task Images
+const completedStorage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: 'waste_reports/completed_tasks', // 🔹 Store completed images in a separate folder
+    allowed_formats: ['jpg', 'jpeg', 'png']
+  }
+});
+
+const uploadReport = multer({ storage: reportStorage });
+const uploadCompleted = multer({ storage: completedStorage });
 
 // ✅ Routes
-router.post('/report', authMiddleware, upload.single('image'), wasteReportController.reportWaste);
+router.post('/report', authMiddleware, uploadReport.single('image'), wasteReportController.reportWaste);
 router.get('/my-reward-points', authMiddleware, wasteReportController.getRewardPoints);
 router.get('/all-reports', authMiddleware, wasteReportController.getAllReports);
 router.get('/my-reports', authMiddleware, wasteReportController.getMyReports);
-router.post('/complete-task', authMiddleware, wasteReportController.completeTask);
-router.get("/worker/:workerId", authMiddleware, wasteReportController.getWasteReportsByWorkerId ); // ✅ Fix ReferenceError
+
+// ✅ Updated Complete Task Route with Image Upload
+router.post('/complete', authMiddleware, uploadCompleted.single('completedImage'), wasteReportController.completeTaskWithImage);
+
+router.get("/worker/:workerId", authMiddleware, wasteReportController.getWasteReportsByWorkerId);
 
 module.exports = router;

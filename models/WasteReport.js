@@ -10,7 +10,8 @@ const WasteReportSchema = new mongoose.Schema({
     },
     assigned: { type: mongoose.Schema.Types.ObjectId, ref: "Worker", default: null },
     status: { type: String, enum: ["waiting to assign", "assigned", "completed"], default: "waiting to assign" },
-    pointsEarned: { type: Number, default: 10 }
+    pointsEarned: { type: Number, default: 10 },
+    completedImage: { type: String, default: null } // ✅ New field to store completed image URL
 }, { timestamps: true });
 
 module.exports = mongoose.model("WasteReport", WasteReportSchema);

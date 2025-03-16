@@ -1,91 +1,196 @@
 .worker-dashboard {
   text-align: center;
   padding: 20px;
-  background-image: url('/src/assets/worker-bg.jpg');
+  background-image: url('/src/assets/background.jpg');
   background-size: cover;
   background-position: center;
-  height: 100vh;
-  color: white;
+  min-height: 100vh;
+  color: black;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  position: relative;
+  overflow: hidden;
 }
 
+/* ✅ Black Tint Overlay for Background */
+.worker-dashboard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6); /* Black Tint */
+  backdrop-filter: blur(10px);
+  z-index: -1;
+}
+
+/* ✅ Navbar Styling */
+.navbar {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+/* ✅ Logo Styling */
+.navbar::before {
+  content: "";
+  background: url("/src/assets/clearzonelogo.jpg") no-repeat center;
+  background-size: contain;
+  width: 50px;
+  height: 50px;
+  display: block;
+  border-radius: 8px;
+}
+
+/* ✅ Navbar Welcome Text */
+.navbar h2 {
+  font-size: 1.5rem;
+  margin: 0;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ✅ Logout Button on Rightmost with Gradient */
+.logout-button {
+  padding: 6px 12px;
+  background: linear-gradient(45deg, #ff8c00, #ff2d55);
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  transition: background 0.3s ease-in-out;
+  width: 80px;
+  text-align: center;
+  margin-left: auto;
+}
+
+.logout-button:hover {
+  background: linear-gradient(to right, #e96443, #904e95);
+}
 h2 {
-  color: black;
-  font-size: 2.5rem;
+  color: #ffcc00;
+  font-size: 2.8rem;
   margin-bottom: 20px;
   font-weight: bold;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 5px rgba(255, 255, 0, 0.6);
+  letter-spacing: 2px;
 }
 
 .worker-dashboard p {
-  color: black;
-  font-size: 1.2rem;
+  color: white;
+  font-size: 1.3rem;
   margin-bottom: 10px;
+  font-weight: 500;
+  text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.5);
 }
 
+/* ✅ Task Card Styling */
 .task-card {
-  border: 1px solid #ddd;
+  border: 2px solid rgba(255, 255, 255, 0.6);
   padding: 20px;
   margin: 15px auto;
   width: 90%;
-  max-width: 400px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  max-width: 450px;
+  background: black !important; /* ✅ Ensures Black Background */
+  color: white; /* ✅ Ensures text is visible */
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
   text-align: left;
 }
-
-/* ✅ Updated Image Styling */
+/* ✅ Image Styling */
 .task-image {
   width: 100%;
-  max-height: 250px;
+  max-height: 200px;
   object-fit: cover;
   border-radius: 8px;
   margin-top: 10px;
+  border: 2px solid white;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-/* ✅ Complete Work Button */
-.complete-button {
-  padding: 12px 18px;
-  background: #ff9800;
+.task-image:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+/* ✅ Completed Tasks Table */
+.completed-tasks-table {
+  width: 95%;
+  max-width: 1000px;
+  border-collapse: collapse;
+  margin-top: 30px;
+  background: black;
   color: white;
-  border: none;
-  cursor: pointer;
-  margin-top: 15px;
-  border-radius: 8px;
-  font-size: 1rem;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+  animation: glow 1.5s infinite alternate;
+}
+
+/* ✅ Glowing Border Effect */
+@keyframes glow {
+  from {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  }
+  to {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+  }
+}
+
+.completed-tasks-table th,
+.completed-tasks-table td {
+  border: 1px solid white;
+  padding: 14px;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.completed-tasks-table th {
+  background-color: #333;
+  color: #ffcc00;
+  font-size: 1.3rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.completed-tasks-table tbody tr:nth-child(even) {
+  background-color: #444;
+}
+
+.completed-tasks-table tbody tr:hover {
+  background-color: #666;
   transition: background 0.3s ease-in-out;
 }
 
-.complete-button:hover {
-  background: #e68900;
+/* ✅ Table Image Styling with Hover Effect */
+.table-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid white;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-/* ✅ Upload Section */
-.upload-container {
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.upload-container input {
-  margin-bottom: 10px;
-}
-
-.upload-button {
-  padding: 10px 15px;
-  background: #28a745;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: background 0.3s ease-in-out;
-}
-
-.upload-button:hover {
-  background: #218838;
+.table-image:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.8);
 }
