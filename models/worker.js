@@ -20,6 +20,11 @@ const WorkerSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  status: {
+    type: String,
+    enum: ['available', 'busy','assigned'],
+    default: 'available' // Workers start as available
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Worker', WorkerSchema);

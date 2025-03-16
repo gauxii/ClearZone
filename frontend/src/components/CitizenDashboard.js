@@ -266,7 +266,7 @@ const toggleLeaderboard = async () => {
                 <tr key={index}>
                   <td>{report.description}</td>
                   <td>{report.status || "Pending"}</td>
-                  <td>{report.assigned || "Not Assigned"}</td>
+                  <td>{report.assigned && typeof report.assigned === "object" ? report.assigned.name : "Not Assigned"}</td>
                   <td>{new Date(report.createdAt).toLocaleString()}</td>
                   <td>
                     {report.imageUrl ? (

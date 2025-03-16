@@ -8,11 +8,11 @@ const WasteReportSchema = new mongoose.Schema({
     latitude: { type: Number, required: true },
     longitude: { type: Number, required: true }
   },
-  status: { type: String, enum: ['pending', 'in progress', 'resolved'], default: 'pending' },
-  assigned: { type: String, default: 'none' }, // Tracks assigned workers (default: none)
-  pointsEarned: { type: Number, default: 10 }, // ✅ Citizens earn 10 points per report
-  createdAt: { type: Date, default: Date.now },
-  assignedWorker: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null } // ✅ Assign worker
+  status: { type: String, enum: ['pending', 'in progress', 'resolved', 'waiting to assign', 'assigned'], default: 'pending' },
+  assigned: { type: mongoose.Schema.Types.ObjectId, ref: "Worker", default: null }, // ✅ Corrected field to ObjectId
+  pointsEarned: { type: Number, default: 10 },
+  createdAt: { type: Date, default: Date.now }
 });
+
 
 module.exports = mongoose.model('WasteReport', WasteReportSchema);
