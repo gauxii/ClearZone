@@ -12,31 +12,34 @@ function LoginPage() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+  
     const apiEndpoint = `http://localhost:5002/api/auth/login/${role}`;
-    
-    // ✅ Fixed request body
+  
     const requestBody =
       role === "user"
-        ? { email: identifier, password } // ✅ User Login
+        ? { email: identifier, password }
         : role === "worker"
-        ? { employeeId: identifier, password } // ✅ Worker Login (Fixed key)
-        : { adminId: identifier, password }; // ✅ Admin Login (Fixed key)
-
+        ? { employeeId: identifier, password }
+        : { adminId: identifier, password };
+  
     try {
       const response = await fetch(apiEndpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestBody),
       });
-
+  
       const data = await response.json();
-
+      console.log("📝 Server Response:", data); // Debugging log
+  
       if (response.ok) {
         localStorage.setItem("token", data.token);
+        localStorage.setItem("name", data.name); 
+        localStorage.setItem("workerId", data.employeeId); // ✅ Fix: Save `identifier` instead of `_id`
+  
         console.log("🔑 Token:", data.token);
-
-        // ✅ Redirect based on role
+        console.log("👤 Identifier:", data.identifier);
+  
         const redirectPath =
           role === "user"
             ? "/upload"
@@ -52,7 +55,6 @@ function LoginPage() {
       setErrorMessage("Server error. Please try again.");
     }
   };
-
   return (
     <div className="login-container" style={{ backgroundImage: `url(${backgroundImage})` }}>
       <div className="login-box">

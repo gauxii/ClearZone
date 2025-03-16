@@ -6,37 +6,47 @@
   background-position: center; /* Centers the image */
   height: 100vh; /* Makes the background image cover the full height */
   color: white; /* Default color for text */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 h2 {
   color: black; /* Make the heading text black */
-  font-size: 2rem;
+  font-size: 2.5rem;
   margin-bottom: 20px;
+  font-weight: bold;
 }
 
 .worker-dashboard p {
   color: black; /* Make all paragraphs text black */
   font-size: 1.2rem;
+  margin-bottom: 10px;
 }
 
 .task-card {
   border: 1px solid #ddd;
   padding: 25px; /* Increase padding to make the content inside more spacious */
   margin: 15px auto; /* Increase margin between the cards */
-  width: 400px; /* Increase width of the card */
-  background: rgba(255, 255, 255, 0.8); /* Semi-transparent white */
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add some shadow for better visual appeal */
+  width: 90%; /* Make it responsive */
+  max-width: 400px; /* Limit max width */
+  background: rgba(255, 255, 255, 0.9); /* More transparency for better readability */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Enhance shadow for depth */
+  text-align: left;
 }
 
 button {
-  padding: 10px 15px; /* Increase padding inside the button */
+  padding: 12px 18px; /* Increased padding inside the button */
   background: #007bff;
   color: white;
   border: none;
   cursor: pointer;
   margin-top: 15px;
-  border-radius: 5px;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: background 0.3s ease-in-out;
 }
 
 button:hover {
@@ -44,13 +54,14 @@ button:hover {
 }
 
 .proceed-button {
-  padding: 12px 20px; /* Increase padding inside the button */
+  padding: 14px 22px; /* Increased padding inside the button */
   background-color: #28a745;
   color: white;
-  font-size: 16px;
-  border-radius: 5px;
+  font-size: 1.2rem;
+  border-radius: 8px;
   cursor: pointer;
   margin-top: 20px;
+  transition: background 0.3s ease-in-out;
 }
 
 .proceed-button:hover {

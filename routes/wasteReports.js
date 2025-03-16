@@ -33,6 +33,6 @@ router.get('/my-reward-points', authMiddleware, wasteReportController.getRewardP
 router.get('/all-reports', authMiddleware, wasteReportController.getAllReports);
 router.get('/my-reports', authMiddleware, wasteReportController.getMyReports);
 router.post('/complete-task', authMiddleware, wasteReportController.completeTask);
-router.get('/worker', authMiddleware, wasteReportController.getWorkerReports); // ✅ Fix ReferenceError
+router.get("/worker/:workerId", authMiddleware, wasteReportController.getWorkerById); // ✅ Fix ReferenceError
 
 module.exports = router;

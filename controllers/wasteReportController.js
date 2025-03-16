@@ -1,61 +1,66 @@
 const WasteReport = require('../models/WasteReport');
 const User = require('../models/AuthUser');
 const Worker = require("../models/worker");
+const mongoose = require("mongoose");
 
 exports.reportWaste = async (req, res) => {
     try {
-        console.log("🔹 User ID from authMiddleware:", req.user);
+        console.log("🔹 Incoming Waste Report Request");
+        console.log("🔹 User ID from Auth Middleware:", req.user?.id);
         console.log("🔹 Request Body:", req.body);
-        console.log("🔹 Uploaded File:", req.file);
+        console.log("🔹 Uploaded File:", req.file?.path || "No file uploaded");
 
         const { description, latitude, longitude } = req.body;
 
+        // ✅ Validate Image Upload
         if (!req.file) {
-            return res.status(400).json({ error: 'Image upload is required' });
+            return res.status(400).json({ error: "Image upload is required." });
         }
 
+        // ✅ Validate Required Fields
         if (!description || !latitude || !longitude) {
-            return res.status(400).json({ error: 'Description and location are required.' });
+            return res.status(400).json({ error: "Description and location are required." });
         }
 
+        // ✅ Parse & Validate Coordinates
         const lat = parseFloat(latitude);
         const lon = parseFloat(longitude);
         if (isNaN(lat) || isNaN(lon)) {
-            return res.status(400).json({ error: 'Invalid latitude or longitude.' });
+            return res.status(400).json({ error: "Invalid latitude or longitude." });
         }
 
-        // ✅ Find the first available worker (FCFS order: oldest available worker first)
+        // ✅ Find the first available worker (FCFS - oldest available worker first)
         const availableWorker = await Worker.findOneAndUpdate(
-            { status: 'available' }, // Find a worker who is free
-            { status: 'busy' }, // Mark as busy (assigned)
-            { new: true, sort: { createdAt: 1 } } // Sort by oldest available worker (FCFS)
+            { status: "available" },
+            { status: "busy" },
+            { new: true, sort: { createdAt: 1 } } 
         );
 
-        // ✅ Determine assignment details
-        let assignedWorker = availableWorker ? availableWorker._id : null;
-        let status = availableWorker ? 'assigned' : 'waiting to assign';
+        // ✅ Assign Worker or Mark as Pending
+        const assignedWorker = availableWorker ? availableWorker._id : null;
+        const status = availableWorker ? "assigned" : "waiting to assign";
 
-        // ✅ Create the waste report
+        // ✅ Create the Waste Report
         const wasteReport = new WasteReport({
             userId: req.user.id,
             description,
             imageUrl: req.file.path,
             location: { latitude: lat, longitude: lon },
             assigned: assignedWorker,
-            status: status,
-            pointsEarned: 10
+            status,
+            pointsEarned: 10,
         });
 
         await wasteReport.save();
 
-        // ✅ Log assigned worker details
+        // ✅ Log Assigned Worker Details
         if (availableWorker) {
-            console.log(`✅ Worker Assigned: ${availableWorker.name} (ID: ${availableWorker._id})`);
+            console.log(`✅ Assigned Worker: ${availableWorker.name} (ID: ${availableWorker._id})`);
         } else {
-            console.log("⚠️ No workers available, waste report is waiting to be assigned.");
+            console.log("⚠️ No workers available. Waste report is waiting for assignment.");
         }
 
-        // ✅ Update user reward points
+        // ✅ Update User Reward Points
         const updatedUser = await User.findByIdAndUpdate(
             req.user.id,
             { $inc: { rewardPoints: 10 } },
@@ -63,17 +68,16 @@ exports.reportWaste = async (req, res) => {
         );
 
         res.status(201).json({
-            message: '✅ Waste reported successfully!',
+            success: true,
+            message: "✅ Waste reported successfully!",
             wasteReport,
-            assignedWorker: availableWorker
-                ? { id: availableWorker._id, name: availableWorker.name }
-                : null, // Send worker details if assigned
-            newRewardPoints: updatedUser.rewardPoints
+            assignedWorker: availableWorker ? { id: availableWorker._id, name: availableWorker.name } : null,
+            newRewardPoints: updatedUser?.rewardPoints || 0,
         });
 
-    } catch (err) {
-        console.error('❌ Waste Report Error:', err);
-        res.status(500).json({ error: 'Server Error', details: err.message });
+    } catch (error) {
+        console.error("❌ Waste Report Error:", error);
+        res.status(500).json({ error: "Server Error", details: error.message });
     }
 };
 
@@ -93,22 +97,30 @@ exports.getAllReports = async (req, res) => {
 };
 
 // ✅ Fetch Reports Assigned to Logged-in Worker
-exports.getWorkerReports = async (req, res) => {
+
+
+
+exports.getWorkerById = async (req, res) => {
     try {
-        const workerId = req.user.id; // Assuming worker authentication stores ID in `req.user.id`
+        const { workerId } = req.params;
 
-        const workerReports = await WasteReport.find({ assigned: workerId, status: 'assigned' })
-            .select('description imageUrl location status assigned createdAt')
-            .populate('userId', 'name email') // Populate citizen details
-            .sort({ createdAt: -1 });
+        // ✅ Validate if workerId is a valid ObjectId
+        if (!mongoose.Types.ObjectId.isValid(workerId)) {
+            return res.status(400).json({ success: false, error: "Invalid Worker ID" });
+        }
 
-        res.status(200).json(workerReports);
-    } catch (err) {
-        console.error('❌ Fetch Worker Reports Error:', err);
-        res.status(500).json({ error: 'Server Error', details: err.message });
+        const worker = await Worker.findById(workerId);
+        if (!worker) {
+            return res.status(404).json({ success: false, error: "Worker not found" });
+        }
+
+        res.status(200).json({ success: true, worker });
+    } catch (error) {
+        console.error("❌ Worker Fetch Error:", error);
+        res.status(500).json({ success: false, error: "Server Error", details: error.message });
     }
 };
-
+  
 // ✅ Fetch Reports Created by Logged-in User
 exports.getMyReports = async (req, res) => {
     try {

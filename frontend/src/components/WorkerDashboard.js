@@ -1,76 +1,82 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./WorkerDashboard.css";
 
 function WorkerDashboard() {
-  const [tasks, setTasks] = useState([
-    { id: 1, location: "Area A", status: "Pending" },
-    { id: 2, location: "Area B", status: "Pending" },
-  ]);
+  const [tasks, setTasks] = useState([]);
   const [workerName, setWorkerName] = useState("");
-  const [selectedTask, setSelectedTask] = useState(null);
+  const [workerId, setWorkerId] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Load worker name if previously entered
-    const savedName = localStorage.getItem("workerName");
-    if (savedName) {
-      setWorkerName(savedName);
+    const savedWorkerName = localStorage.getItem("name");
+    const savedWorkerId = localStorage.getItem("workerId");
+    
+    if (savedWorkerName) setWorkerName(savedWorkerName);
+    if (savedWorkerId) setWorkerId(savedWorkerId);
+
+    if (savedWorkerId) {
+      fetchAssignedTasks(savedWorkerId);
+    } else {
+      console.error("❌ No worker ID found in local storage.");
     }
   }, []);
 
-  const acceptTask = (id) => {
-    if (!workerName) {
-      const name = prompt("Enter your name to accept the task:");
-      if (!name) return;
-      setWorkerName(name);
-      localStorage.setItem("workerName", name);
+  const fetchAssignedTasks = async (workerId) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("❌ No authentication token found");
+        return;
+      }
+  
+      console.log("🔍 Fetching tasks for Worker ID:", workerId);
+  
+      const response = await axios.get(`http://localhost:5002/api/waste/worker/${workerId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+  
+      console.log("✅ API Response:", response.data);
+  
+      if (response.data.success && Array.isArray(response.data.reports)) {
+        setTasks(response.data.reports);
+      } else {
+        console.error("❌ Unexpected API response format:", response.data);
+      }
+    } catch (error) {
+      console.error("❌ Error fetching tasks:", error.response?.data || error.message);
     }
-
-    // Find the selected task and update the status
-    const updatedTasks = tasks.map((task) =>
-      task.id === id && task.status === "Pending"
-        ? { ...task, status: `Accepted by ${workerName}` }
-        : task
-    );
-
-    setTasks(updatedTasks);
-    setSelectedTask(id);
-
-    // Save to local storage for admin to view
-    localStorage.setItem("acceptedTasks", JSON.stringify(updatedTasks));
   };
-
-  const proceedToUpload = () => {
-    navigate("/worker-upload");
+  const proceedToUpload = (taskId) => {
+    navigate(`/worker-upload/${taskId}`);
   };
 
   return (
     <div className="worker-dashboard">
       <h2>Worker Dashboard</h2>
-      <p>Welcome, {workerName || "Worker"}!</p>
-
-      {tasks.map((task) => (
-        <div key={task.id} className="task-card">
-          <p>📍 Location: {task.location}</p>
-          {task.status.startsWith("Accepted") ? (
-            <p>✅ {task.status}</p>
-          ) : (
-            <button
-              onClick={() => acceptTask(task.id)}
-              disabled={task.status !== "Pending"} // Disable if task is accepted
-            >
-              Accept Task
-            </button>
-          )}
-        </div>
-      ))}
-
-      {/* Show Camera Button Only After Accepting Task */}
-      {selectedTask && (
-        <button className="proceed-button" onClick={proceedToUpload}>
-          Proceed to Upload Cleaned Image
-        </button>
+      
+      {/* ✅ Debugging logs */}
+      {console.log("👤 Worker Name from LocalStorage:", workerName)}
+      {console.log("🆔 Worker ID from LocalStorage:", workerId)}
+  
+      <p>Welcome, <strong>{workerName || "Worker"}</strong>!</p>
+  
+      {tasks.length > 0 ? (
+        tasks.map((task) => (
+          <div key={task._id} className="task-card">
+            <p>📍 Location: {task.location?.latitude}, {task.location?.longitude}</p>
+            <p>Description: {task.description}</p>
+            <p>Status: {task.status}</p>
+            {task.status === "assigned" && (
+              <button className="proceed-button" onClick={() => proceedToUpload(task._id)}>
+                Proceed to Upload Cleaned Image
+              </button>
+            )}
+          </div>
+        ))
+      ) : (
+        <p>No tasks assigned yet.</p>
       )}
     </div>
   );
