@@ -54,17 +54,24 @@ function CitizenDashboard() {
     }
   };
 
-  const fetchRewardPoints = async () => {
-    try {
-      const response = await axios.get("http://localhost:5002/api/waste/reward-points", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
-      console.log("Reward Points Data:", response.data); // Debugging line
-      setPoints(response.data.rewardPoints);
-    } catch (error) {
-      console.error("Error fetching reward points:", error);
+  // ✅ Fetch Reward Points from Backend
+const fetchRewardPoints = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("No token found in localStorage");
+      return;
     }
-  };
+
+    const response = await axios.get("http://localhost:5002/api/waste/my-reward-points", {
+      headers: { Authorization: `Bearer ${token}` }, // ✅ Corrected template literal syntax
+    });
+
+    setPoints(response.data.rewardPoints); // ✅ Update reward points state
+  } catch (error) {
+    console.error("Error fetching reward points:", error.response?.data || error.message);
+  }
+};
   
 
   // ✅ Get User's Location

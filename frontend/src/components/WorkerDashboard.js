@@ -103,7 +103,12 @@ function WorkerDashboard() {
   return (
     <div className="worker-dashboard">
       {/* ✅ Navbar */}
+      
       <nav className="navbar">
+      <div className="logo-container">
+    <img src={require("../assets/clearzonelogo.jpg")} alt="ClearZone Logo" className="logo" />
+    <span className="site-name">ClearZone</span>
+  </div>
         <h2>Welcome, {workerName || "Worker"}!</h2>
         <button className="logout-button" onClick={handleLogout}>Logout</button>
       </nav>
