@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./WorkerDashboard.css";
-import MiniMap from "./MiniMap"; // ✅ Import MiniMap
+// import MiniMap from "./MiniMap"; // ❌ Temporarily Commented Out
 
 function WorkerDashboard() {
   const [tasks, setTasks] = useState([]);
@@ -81,18 +81,22 @@ function WorkerDashboard() {
 
     try {
       const token = localStorage.getItem("token");
+
       const response = await axios.post(
-        `http://localhost:5002/api/waste/complete-task`,
+        `http://localhost:5002/api/waste/complete`,
         formData,
         { headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" } }
       );
 
       console.log("✅ Work completed:", response.data);
+
       setUploadingTaskId(null);
       setSelectedFile(null);
+      alert("✅ Task marked as completed!");
       fetchAssignedTasks(workerId); // Refresh tasks
     } catch (error) {
       console.error("❌ Error completing work:", error.response?.data || error.message);
+      alert("❌ Error completing task. Please try again.");
     }
   };
 
@@ -109,14 +113,15 @@ function WorkerDashboard() {
         tasks.map((task) => (
           <div key={task._id} className="task-card">
             <p><strong>Description:</strong> {task.description}</p>
+            <p><strong>📍 Location:</strong> {task.location?.latitude}, {task.location?.longitude}</p>
 
-            {/* ✅ Replace location text with MiniMap
-            {task.location?.latitude && task.location?.longitude ? (
+            {/* ❌ MiniMap Removed */}
+            {/* {task.location?.latitude && task.location?.longitude ? (
               <MiniMap latitude={task.location.latitude} longitude={task.location.longitude} />
             ) : (
               <p>📍 Location not available</p>
             )} */}
-            <p><strong>📍 Location:</strong> {task.location?.latitude}, {task.location?.longitude}</p>
+
             {task.imageUrl && <img src={task.imageUrl} alt="Waste Report" className="task-image" />}
 
             {task.status === "assigned" && (
@@ -157,13 +162,15 @@ function WorkerDashboard() {
             {completedTasks.map(task => (
               <tr key={task._id}>
                 <td>{task.description}</td>
-                {/* <td>
-                  {task.location?.latitude && task.location?.longitude ? (
+                <td>
+                  {/* ❌ MiniMap Removed */}
+                  {/* {task.location?.latitude && task.location?.longitude ? (
                     <MiniMap latitude={task.location.latitude} longitude={task.location.longitude} />
                   ) : (
                     "📍 Location not available"
-                  )}
-                </td> */}
+                  )} */}
+                  {task.location?.latitude}, {task.location?.longitude}
+                </td>
                 <td><img src={task.imageUrl} alt="Waste Report" className="table-image" /></td>
                 <td>{task.completedImage ? <img src={task.completedImage} alt="Completed Work" className="table-image" /> : "No Image"}</td>
               </tr>
