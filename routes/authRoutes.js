@@ -89,5 +89,79 @@ router.post('/login/admin', async (req, res) => {
     res.status(500).json({ error: 'Server Error', details: err.message });
   }
 });
+// ✅ User Signup
+router.post('/signup/user', async (req, res) => {
+  const { name, email, password } = req.body;
+
+  try {
+    if (!name || !email || !password) {
+      return res.status(400).json({ error: "All fields are required." });
+    }
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ error: "Email already exists." });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({ name, email, password: hashedPassword });
+    await newUser.save();
+
+    res.status(201).json({ message: "✅ User signup successful!" });
+  } catch (error) {
+    console.error("❌ Signup Error:", error);
+    res.status(500).json({ error: "Server Error", details: error.message });
+  }
+});
+
+// ✅ Worker Signup
+router.post('/signup/worker', async (req, res) => {
+  const { name, employeeId, password } = req.body;
+
+  try {
+    if (!name || !employeeId || !password) {
+      return res.status(400).json({ error: "All fields are required." });
+    }
+
+    const existingWorker = await Worker.findOne({ employeeId });
+    if (existingWorker) {
+      return res.status(400).json({ error: "Employee ID already exists." });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newWorker = new Worker({ name, employeeId, password: hashedPassword });
+    await newWorker.save();
+
+    res.status(201).json({ message: "✅ Worker signup successful!" });
+  } catch (error) {
+    console.error("❌ Signup Error:", error);
+    res.status(500).json({ error: "Server Error", details: error.message });
+  }
+});
+
+// ✅ Admin Signup
+router.post('/signup/admin', async (req, res) => {
+  const { name, adminId, password } = req.body;
+
+  try {
+    if (!name || !adminId || !password) {
+      return res.status(400).json({ error: "All fields are required." });
+    }
+
+    const existingAdmin = await Admin.findOne({ adminId });
+    if (existingAdmin) {
+      return res.status(400).json({ error: "Admin ID already exists." });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newAdmin = new Admin({ name, adminId, password: hashedPassword });
+    await newAdmin.save();
+
+    res.status(201).json({ message: "✅ Admin signup successful!" });
+  } catch (error) {
+    console.error("❌ Signup Error:", error);
+    res.status(500).json({ error: "Server Error", details: error.message });
+  }
+});
 
 module.exports = router;
