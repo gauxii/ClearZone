@@ -1,92 +1,99 @@
 /* Full-Page Background */
 .admin-dashboard-container {
-  height: 100vh;
+  min-height: 100vh; /* Ensures it covers full viewport height */
   width: 100%;
   background-size: cover;
-  background-position: center; /* Center the background image */
+  background-position: center;
+  background-attachment: fixed; /* ✅ Keeps background fixed while scrolling */
   display: flex;
-  flex-direction: column; /* Stack elements vertically */
+  flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   background-repeat: no-repeat;
+  padding-bottom: 20px; /* Prevents content from touching the bottom */
+  padding-top: 80px;
 }
 
-/* Admin Dashboard Heading */
-h2 {
-  color: #2c3e50;
-  font-weight: 700;
-  margin-top: 20px;
-  text-align: center;
-}
-
-/* Flexbox for Left and Right Layout */
+/* Dashboard Content Wrapper */
 .dashboard-content {
-  display: flex; /* Display side by side */
-  justify-content: space-between; /* Space out the two boxes */
-  gap: 40px; /* Increased space between boxes */
-  width: 80%; /* Ensure it uses most of the screen width */
-  max-width: 1200px; /* Max width to prevent it from becoming too large */
-  margin-top: 20px; /* Space from the top */
-}
-
-/* Tasks and Recycling Containers */
-.tasks-container, .recycling-container {
-  flex: 1; /* Take equal space */
+  width: 85%;
+  max-width: 1200px;
+  margin-top: 20px;
+  background: rgba(255, 255, 255, 0.9);
   padding: 20px;
-  background: #fff; /* Solid white background */
   border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Tasks Container Border */
-.tasks-container {
-  border-left: 6px solid #3498db; /* Blue border for tasks */
+/* Table Container */
+.table-container {
+  overflow-x: auto;
+  margin-top: 20px;
 }
 
-/* Recycling Container Border */
-.recycling-container {
-  border-left: 6px solid #2ecc71; /* Green border for recycling */
+/* Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
-/* Task & Recycling Cards */
-.task-card, .recycling-card {
-  background: #fff; /* Solid white background for cards */
-  padding: 20px;
-  border-radius: 10px;
-  margin: 15px 0;
+th, td {
+  padding: 12px;
   text-align: left;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease-in-out;
+  border-bottom: 1px solid #ddd;
 }
 
-.task-card:hover, .recycling-card:hover {
-  transform: translateY(-5px);
+th {
+  background: #3498db;
+  color: white;
 }
 
-/* Task & Recycling Colors */
-.task-card {
-  border-left: 6px solid #3498db;
+tr:hover {
+  background: #f1f1f1;
+}
+.navbar {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.8); /* Dark transparent background */
+  padding: 15px 0;
+  display: flex;
+  justify-content: center; /* ✅ Centers the content horizontally */
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+/* ✅ Logo and Site Name */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between logo and text */
 }
 
-.recycling-card {
-  border-left: 6px solid #2ecc71;
+/* ✅ Logo Image */
+.logo {
+  height: 40px;
+}
+
+/* ✅ Site Name */
+.site-name {
+  font-size: 22px;
+  font-weight: bold;
+  color: white;
+  letter-spacing: 1px;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .dashboard-content {
-    flex-direction: column; /* Stack boxes vertically on small screens */
-    align-items: center; /* Center the boxes */
+    width: 95%;
   }
 
-  .tasks-container, .recycling-container {
-    width: 90%; /* Full width on mobile */
-    margin-bottom: 20px; /* Space between the stacked boxes */
+  table {
+    font-size: 14px;
   }
 }
-
-
-
-
-  
-  
