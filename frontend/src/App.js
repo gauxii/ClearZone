@@ -8,7 +8,7 @@ import WorkerUpload from "./components/WorkerUpload";
 import AdminDashboard from "./components/AdminDashboard";
 import AdminRecycling from "./components/AdminRecycling";
 import SignupPage from "./components/SignupPage";
-
+import AboutUs from "./components/AboutUs";
 
 function App() {
   return (
@@ -23,6 +23,7 @@ function App() {
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/admin-recycling" element={<AdminRecycling />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/about" element={<AboutUs />} /> 
         </Routes>
       </div>
     </Router>

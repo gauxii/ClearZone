@@ -211,6 +211,7 @@ const toggleLeaderboard = async () => {
     <span className="nav-item" onClick={scrollToSubmissions}>View Latest Submissions</span>
     <span className="nav-item" onClick={scrollToRewards}>View Reward Points</span>
     <span className="nav-item" onClick={toggleLeaderboard}>View Leadership Board</span>
+    <span className="nav-item" onClick={() => navigate("/about")}>About Us</span>
   </div>
 
   <div className="nav-right">
