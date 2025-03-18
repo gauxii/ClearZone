@@ -100,8 +100,8 @@ th:last-child, td:last-child {
 
 /* ✅ Navbar with Slide-down Effect */
 .navbar {
-  width: 100%;
-  background: rgba(0, 0, 0, 0.8);
+  width: 100%;background: rgba(0, 0, 0, 0.8);
+  
   padding: 15px 0;
   display: flex;
   justify-content: space-between;
