@@ -4,6 +4,9 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     color: #333;
+    /* Background Image */
+    background: url("../assets/contact-back.jpg") no-repeat center center fixed;
+    background-size: cover;
 }
 
 /* Header */

@@ -9,6 +9,7 @@ import AdminDashboard from "./components/AdminDashboard";
 import AdminRecycling from "./components/AdminRecycling";
 import SignupPage from "./components/SignupPage";
 import AboutUs from "./components/AboutUs";
+import ContactUs from "./components/ContactUs";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/admin-recycling" element={<AdminRecycling />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/about" element={<AboutUs />} /> 
+          <Route path="/contact" element={<ContactUs />} />
         </Routes>
       </div>
     </Router>

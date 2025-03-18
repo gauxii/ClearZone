@@ -342,7 +342,9 @@ const toggleLeaderboard = async () => {
 
 
     </div>
+    
   );
+  
 }
 
 export default CitizenDashboard;

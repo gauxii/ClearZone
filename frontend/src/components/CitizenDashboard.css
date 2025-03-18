@@ -322,24 +322,28 @@ textarea:focus {
 .latest-reports {
   width: 90%;
   max-width: 900px;
+  background-color: white;
   margin: 20px auto;
   border-collapse: collapse;
-  background: rgba(0, 0, 0, 0.8); /* ✅ Made it duller (was 0.7) */
+  /*background: rgba(0, 0, 0, 0.8);*/ /* ✅ Made it duller (was 0.7) */
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0px 0px 10px rgba(0, 255, 170, 0.15); /* ✅ Reduced glow */
   font-size: 14px;
   text-align: center;
 }
-
+.latest-reports th{
+  background-color: #2E7D32;
+}
 /* ✅ Make table cells flexible */
-.latest-reports th, 
+ 
 .latest-reports td {
   min-width: 120px; /* Ensure columns have a base width */
   padding: 12px;
   text-align: center;
-  color: white;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: black;
+  /*border-bottom: 1px solid rgba(255, 255, 255, 0.1);*/
+  border-bottom: white;
   word-wrap: break-word; /* Prevents text overflow */
   white-space: nowrap; /* Prevents too much shrinking */
 }
@@ -460,22 +464,29 @@ textarea:focus {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-/* ✅ Ranking Colors */
-.rank-1 {
+
+/* ✅ Special Ranking Colors */
+.leaderboard-table tr.rank-1 td {
   background-color: #ffd700; /* Gold */
   font-weight: bold;
+  color: #333;
 }
 
-.rank-2 {
+.leaderboard-table tr.rank-2 td {
   background-color: #c0c0c0; /* Silver */
   font-weight: bold;
+  color: #333;
 }
 
-.rank-3 {
+.leaderboard-table tr.rank-3 td {
   background-color: #cd7f32; /* Bronze */
   font-weight: bold;
+  color: #fff;
 }
-
+/* ✅ Hover Effect */
+.leaderboard-table tbody tr:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
 /* ✅ Responsive Design */
 @media (max-width: 768px) {
   .leaderboard-table th, .leaderboard-table td {
@@ -521,3 +532,4 @@ textarea:focus {
     transform: translate(-50%, -50%);
   }
 }
+

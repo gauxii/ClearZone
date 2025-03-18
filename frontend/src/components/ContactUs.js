@@ -1,32 +1,22 @@
 import React from "react";
-import "./AboutUs.css";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"; // For navigation links
+import "./ContactUs.css";
 
-const AboutUs = () => {
+const ContactUs = () => {
   return (
-    <div className="about-container">
+    <div className="contact-container">
       <header className="header">
-      <img src={require("../assets/clearzonelogo.jpg")} alt="ClearZone Logo" className="logo" />
-    <span className="site-name">ClearZone</span>
-        <nav>
-          <ul>
-          <li><strong><Link to="/contact">Contact Us</Link></strong></li>
-          </ul>
-        </nav>
+        <img src={require("../assets/clearzonelogo.jpg")} alt="ClearZone Logo" className="logo" />
+        <span className="site-name">ClearZone</span>
       </header>
 
-      <section className="about-content">
-        <h1>ABOUT US</h1>
-        <p><strong>ClearZone</strong> is a smart waste management platform designed to enhance urban cleanliness using IoT and AI-based solutions. Our mission is to revolutionize waste collection and recycling processes, making cities more sustainable and environmentally friendly.</p>
-
-        <h2>Our Vision</h2>
-        <p>At <strong>ClearZone</strong>, we aim to create a cleaner, greener future by optimizing waste collection and reducing environmental impact. Our platform connects waste management services with real-time data analytics to enhance efficiency.</p>
-
-        <h2>Why Choose Us?</h2>
+      <section className="contact-content">
+        <h1>Contact Us</h1>
+        <p>Feel free to reach out to us through the following:</p>
         <ul>
-          <li>Real-time waste monitoring and smart bin technology</li>
-          <li>AI-powered waste classification for efficient recycling</li>
-          <li>Community engagement and environmental awareness</li>
+          <li><strong>Email:</strong> clearzone06@gmail.com</li>
+          <li><strong>Phone:</strong> +1 234 567 890</li>
+          <li><strong>Address:</strong> 123 Green Street, Clean City, Earth</li>
         </ul>
       </section>
 
@@ -76,4 +66,4 @@ const AboutUs = () => {
   );
 };
 
-export default AboutUs;
+export default ContactUs;
