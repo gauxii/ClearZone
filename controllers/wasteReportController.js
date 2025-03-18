@@ -87,6 +87,7 @@ exports.getAllReports = async (req, res) => {
         const reports = await WasteReport.find()
         .populate({ path: 'userId', model: 'User', select: 'name email' })
         .populate({ path: 'assigned', model: 'Worker', select: 'name email' }) 
+        .select('location description image status userId assigned createdAt')
             .sort({ createdAt: -1 });
 
         res.status(200).json(reports);

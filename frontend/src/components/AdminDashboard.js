@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react"; // ✅ Import React hooks
+import { useNavigate } from "react-router-dom"; // ✅ Import useNavigate
 import "./AdminDashboard.css";
-import backgroundImage from "../assets/admin-bg.png";
-import logo from "../assets/clearzonelogo.jpg"; // ✅ Import your logo image
+import backgroundImage from "../assets/admin-bg.png"; // ✅ Import background
+import logo from "../assets/clearzonelogo.jpg"; // ✅ Import logo
 
 function AdminDashboard() {
+  const navigate = useNavigate(); // ✅ Initialize navigate
+
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -41,6 +44,12 @@ function AdminDashboard() {
     }
   };
 
+  // ✅ Logout Function
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
+
   return (
     <div 
       className="admin-dashboard-container" 
@@ -52,10 +61,12 @@ function AdminDashboard() {
           <img src={logo} alt="ClearZone Logo" className="logo" />
           <span className="site-name">ClearZone</span>
         </div>
+        {/* ✅ Logout Button */}
+        <button className="logout-button" onClick={handleLogout}>Logout</button>
       </nav>
 
-      <h2>Admin Dashboard</h2>
-
+      <h2 style={{ textAlign: "center" }}>Admin Dashboard</h2> {/* ✅ Centered */}
+      
       <div className="dashboard-content">
         {error && <p className="error-message">⚠️ {error}</p>}
 
@@ -63,7 +74,7 @@ function AdminDashboard() {
           <p>Loading reports...</p>
         ) : (
           <div className="tasks-container">
-            <h3>All Waste Reports</h3>
+            <h3 style={{ textAlign: "center" }}>All Waste Reports</h3> {/* ✅ Centered */}
             {reports.length === 0 ? (
               <p>No reports available.</p>
             ) : (
@@ -72,6 +83,7 @@ function AdminDashboard() {
                   <tr>
                     <th>📍 Location</th>
                     <th>📝 Description</th>
+                    <th>🔄 Status</th>
                     <th>👤 Reported By</th>
                     <th>👷 Assigned Worker</th>
                   </tr>
@@ -81,6 +93,7 @@ function AdminDashboard() {
                     <tr key={report._id}>
                       <td>{report.location?.latitude}, {report.location?.longitude}</td>
                       <td>{report.description}</td>
+                      <td>{report.status}</td>
                       <td>{report.userId?.name || "Unknown"}</td>
                       <td>{report.assigned?.name || "Not Assigned"}</td>
                     </tr>
@@ -95,4 +108,4 @@ function AdminDashboard() {
   );
 }
 
-export default AdminDashboard;
+export default AdminDashboard; // ✅ Ensure default export

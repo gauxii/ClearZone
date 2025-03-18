@@ -105,7 +105,7 @@ function WorkerDashboard() {
       {/* ✅ Navbar */}
       
       <nav className="navbar">
-      <div className="logo-container">
+        <div className="logo-container">
     <img src={require("../assets/clearzonelogo.jpg")} alt="ClearZone Logo" className="logo" />
     <span className="site-name">ClearZone</span>
   </div>
