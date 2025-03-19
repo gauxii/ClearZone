@@ -2,6 +2,7 @@ const WasteReport = require('../models/WasteReport');
 const User = require('../models/AuthUser');
 const Worker = require("../models/worker");
 const mongoose = require("mongoose");
+const { sendCompletionEmail } = require("../utils/emailService");
 
 exports.reportWaste = async (req, res) => {
     try {
@@ -139,12 +140,17 @@ exports.completeTaskWithImage = async (req, res) => {
         const wasteReport = await WasteReport.findOne({
             assigned: workerId,
             status: "assigned"
-        });
+        }).populate({ path: "userId", model: "User", select: "email" });
 
         if (!wasteReport) {
             return res.status(404).json({ success: false, error: "No assigned task found for this worker." });
         }
+        console.log("🛠 Full User Data:", wasteReport.userId); // Debugging
 
+        // ✅ Ensure user email exists
+        if (!wasteReport.userId?.email) {
+            console.error("❌ User email not found. Email will not be sent.");
+        }
         // ✅ Save Cloudinary completed image URL to the report
         wasteReport.status = "completed";
         wasteReport.completedImage = req.file.path; // ✅ Cloudinary image URL
@@ -159,9 +165,19 @@ exports.completeTaskWithImage = async (req, res) => {
 
         console.log(`✅ Worker ${worker?.name} is now available again.`);
 
+        // ✅ Attempt to send email only if user email exists
+        if (wasteReport.userId?.email) {
+            try {
+                console.log("📧 Sending email to:", wasteReport.userId.email);
+                await sendCompletionEmail(wasteReport.userId.email, wasteReport._id, wasteReport.completedImage);
+                console.log("✅ Email sent successfully to:", wasteReport.userId.email);
+            } catch (emailError) {
+                console.error("❌ Email sending failed:", emailError);
+            }
+        }
         res.status(200).json({
             success: true,
-            message: "Task completed successfully!",
+            message: "Task completed successfully! Email sent to user.",
             updatedReport: wasteReport
         });
 
