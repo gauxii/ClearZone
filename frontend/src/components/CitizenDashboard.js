@@ -95,7 +95,7 @@ const fetchRewardPoints = async () => {
   
           try {
             const response = await axios.get(
-              `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=API key:AIzaSyAN_dWYJZn5_bFQx7huMdod7z0gsefFi4Y`
+              `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyAN_dWYJZn5_bFQx7huMdod7z0gsefFi4Y`
             );
             console.log("🔹 Google Maps API Response:", response.data);
             if (response.data.results.length > 0) {
