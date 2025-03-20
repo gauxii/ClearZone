@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./CitizenDashboard.css";
+import FeedbackForm from "../components/Feedbackform";
 import awarenessImage from "../assets/image.jpg";
 import backImage from "../assets/citizenback.jpg";
 
@@ -16,6 +17,8 @@ function CitizenDashboard() {
   const [showPopup, setShowPopup] = useState(false);
   const [leaderboard, setLeaderboard] = useState([]);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [showFeedbackPopup, setShowFeedbackPopup] = useState(false);
+const [reportToFeedback, setReportToFeedback] = useState(null);
 
   const videoRef = useRef(null);
   const submissionsRef = useRef(null);
@@ -37,6 +40,14 @@ function CitizenDashboard() {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       setReports(response.data);
+      // Check if there's any completed report without feedback
+      const pendingFeedbackReport = response.data.find(
+        (report) => report.status === "completed" && !report.feedback
+      );
+      if (pendingFeedbackReport) {
+        setReportToFeedback(pendingFeedbackReport);
+        setShowFeedbackPopup(true);
+      }
     } catch (error) {
       console.error("Error fetching reports:", error);
     }
@@ -73,16 +84,38 @@ const fetchRewardPoints = async () => {
   }
 };
   
-
+  
   // ✅ Get User's Location
   const fetchLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          });
+        async (position) => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+  
+          try {
+            const response = await axios.get(
+              `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=API key:AIzaSyAN_dWYJZn5_bFQx7huMdod7z0gsefFi4Y`
+            );
+            console.log("🔹 Google Maps API Response:", response.data);
+            if (response.data.results.length > 0) {
+              const address = response.data.results[0].formatted_address;
+  
+              setLocation({
+                latitude,
+                longitude,
+                address, // ✅ Store the readable address
+              });
+            } else {
+              setLocation({
+                latitude,
+                longitude,
+                address: "Address not found",
+              });
+            }
+          } catch (error) {
+            console.error("Error fetching address:", error);
+          }
         },
         (error) => console.error("Error fetching location:", error)
       );
@@ -130,6 +163,7 @@ const fetchRewardPoints = async () => {
     formData.append("description", description);
     formData.append("latitude", location.latitude);
     formData.append("longitude", location.longitude);
+    formData.append("address", location.address || "Address not available");
 
     try {
       await axios.post("http://localhost:5002/api/waste/report", formData, {
@@ -194,7 +228,7 @@ const toggleLeaderboard = async () => {
     localStorage.removeItem("token");
     navigate("/login");
   };
-
+  
   return (
     <div className="dashboard-container">
       {showPopup && <div className="reward-popup">🎉 You got +10 points!</div>}
@@ -253,8 +287,8 @@ const toggleLeaderboard = async () => {
 </div>
 
 
-      {/* ✅ Latest Submissions */}
-      <div ref={submissionsRef} className="latest-reports">
+     {/* ✅ Latest Submissions */}
+     <div className="latest-reports">
         <h3>Latest Submissions</h3>
         {reports.length === 0 ? (
           <p>No reports found. Try submitting one!</p>
@@ -267,14 +301,15 @@ const toggleLeaderboard = async () => {
                 <th>Assigned To</th>
                 <th>Submitted On</th>
                 <th>Image</th>
+                <th>Feedback</th>
               </tr>
             </thead>
             <tbody>
-              {reports.map((report, index) => (
-                <tr key={index}>
+              {reports.map((report) => (
+                <tr key={report._id}>
                   <td>{report.description}</td>
                   <td>{report.status || "Pending"}</td>
-                  <td>{report.assigned && typeof report.assigned === "object" ? report.assigned.name : "Not Assigned"}</td>
+                  <td>{report.assigned ? report.assigned.name : "Not Assigned"}</td>
                   <td>{new Date(report.createdAt).toLocaleString()}</td>
                   <td>
                     {report.imageUrl ? (
@@ -283,12 +318,35 @@ const toggleLeaderboard = async () => {
                       "No Image"
                     )}
                   </td>
+                  <td>
+                    {report.feedback ? (
+                      <p>{report.feedback.rating} Stars - {report.feedback.comment}</p>
+                    ) : (
+                      "No Feedback Given"
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         )}
       </div>
+      {showFeedbackPopup && reportToFeedback && (
+    <div className="feedback-popup">
+        <h3>Provide Feedback for Completed Report</h3>
+        <FeedbackForm
+            reportId={reportToFeedback._id}
+            onFeedbackSubmitted={(updatedReport) => {
+                setReports((prevReports) =>
+                    prevReports.map((r) =>
+                        r._id === updatedReport._id ? updatedReport : r
+                    )
+                );
+                setShowFeedbackPopup(false);
+            }}
+        />
+    </div>
+)}
         {/* ✅ Reward Points Section (Enhanced) */}
 <div ref={rewardRef} className="reward-section">
   <h3>Reward Points</h3>

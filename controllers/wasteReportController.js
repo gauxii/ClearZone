@@ -11,7 +11,7 @@ exports.reportWaste = async (req, res) => {
         console.log("🔹 Request Body:", req.body);
         console.log("🔹 Uploaded File:", req.file?.path || "No file uploaded");
 
-        const { description, latitude, longitude } = req.body;
+        const { description, latitude, longitude,address } = req.body;
 
         // ✅ Validate Image Upload
         if (!req.file) {
@@ -47,6 +47,7 @@ exports.reportWaste = async (req, res) => {
             description,
             imageUrl: req.file.path,
             location: { latitude: lat, longitude: lon },
+            address: address || "Unknown Address",
             assigned: assignedWorker,
             status,
             pointsEarned: 10,
@@ -246,5 +247,37 @@ exports.completeTask = async (req, res) => {
     } catch (err) {
         console.error('❌ Task Completion Error:', err);
         res.status(500).json({ error: 'Server Error', details: err.message });
+    }
+};
+//feedback submission
+exports.submitFeedback = async (req, res) => {
+    try {
+        const { reportId } = req.params;
+        const { rating, comment } = req.body;
+
+        // Validate input
+        if (!rating || rating < 1 || rating > 5) {
+            return res.status(400).json({ error: "Rating must be between 1 and 5." });
+        }
+
+        // Find the waste report
+        const wasteReport = await WasteReport.findById(reportId);
+        if (!wasteReport) {
+            return res.status(404).json({ error: "Waste report not found." });
+        }
+
+        // Check if the task is completed before allowing feedback
+        if (wasteReport.status !== "completed") {
+            return res.status(400).json({ error: "Feedback can only be submitted for completed tasks." });
+        }
+
+        // Update the feedback
+        wasteReport.feedback = { rating, comment };
+        await wasteReport.save();
+
+        res.status(200).json({ success: true, message: "Feedback submitted successfully.", wasteReport });
+    } catch (error) {
+        console.error("❌ Feedback Submission Error:", error);
+        res.status(500).json({ error: "Server Error", details: error.message });
     }
 };

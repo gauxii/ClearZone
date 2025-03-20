@@ -4,6 +4,7 @@ const cloudinary = require('cloudinary').v2;
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const authMiddleware = require('../middleware/authMiddleware');
 const wasteReportController = require('../controllers/wasteReportController');
+const { submitFeedback } = require("../controllers/wasteReportController");
 
 require('dotenv').config();
 
@@ -48,4 +49,6 @@ router.post('/complete', authMiddleware, uploadCompleted.single('completedImage'
 
 router.get("/worker/:workerId", authMiddleware, wasteReportController.getWasteReportsByWorkerId);
 
+
+router.post("/report/:reportId/feedback", authMiddleware, wasteReportController.submitFeedback);
 module.exports = router;

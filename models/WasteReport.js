@@ -8,10 +8,15 @@ const WasteReportSchema = new mongoose.Schema({
         latitude: { type: Number, required: true },
         longitude: { type: Number, required: true }
     },
+    address: { type: String,default: "Unknown Address"},
     assigned: { type: mongoose.Schema.Types.ObjectId, ref: "Worker", default: null },
     status: { type: String, enum: ["waiting to assign", "assigned", "completed"], default: "waiting to assign" },
     pointsEarned: { type: Number, default: 10 },
-    completedImage: { type: String, default: null } // ✅ New field to store completed image URL
+    completedImage: { type: String, default: null }, // ✅ New field to store completed image URL
+    feedback: {
+        rating: { type: Number, min: 1, max: 5 },
+        comment: { type: String },
+      },
 }, { timestamps: true });
 
 module.exports = mongoose.model("WasteReport", WasteReportSchema);
