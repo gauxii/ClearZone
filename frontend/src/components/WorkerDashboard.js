@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
+import { GoogleMap, LoadScript, Marker,InfoWindow } from "@react-google-maps/api";
 import "./WorkerDashboard.css";
 // import MiniMap from "./MiniMap"; // ❌ Temporarily Commented Out
 
@@ -19,6 +19,7 @@ function WorkerDashboard() {
   const [uploadingTaskId, setUploadingTaskId] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [mapCenter, setMapCenter] = useState(defaultCenter);
+  const [selectedTask, setSelectedTask] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -171,15 +172,32 @@ function WorkerDashboard() {
       )}
       {/* ✅ Google Map with Dynamic Centering */}
       <LoadScript googleMapsApiKey="AIzaSyAN_dWYJZn5_bFQx7huMdod7z0gsefFi4Y">
-  <GoogleMap mapContainerStyle={mapContainerStyle} center={mapCenter} zoom={12}>
+  <GoogleMap mapContainerStyle={mapContainerStyle} center={tasks.length > 0 ? { lat: tasks[0].location.latitude, lng: tasks[0].location.longitude } : defaultCenter} zoom={12}>
+    
     {tasks.map((task) =>
       task.location?.latitude && task.location?.longitude ? (
         <Marker
           key={task._id}
           position={{ lat: task.location.latitude, lng: task.location.longitude }}
           title={task.description}
+          onClick={() => setSelectedTask(task)} // When clicked, set selected task
         />
       ) : null
+    )}
+
+    {/* Show InfoWindow when a marker is clicked */}
+    {selectedTask && selectedTask.location?.latitude && selectedTask.location?.longitude && (
+      <InfoWindow
+        position={{ lat: selectedTask.location.latitude, lng: selectedTask.location.longitude }}
+        onCloseClick={() => setSelectedTask(null)} // Close window on click
+      >
+        <div>
+          <h4>📍 {selectedTask.address || "Address Not Available"}</h4>
+          <p><strong>Latitude:</strong> {selectedTask.location.latitude}</p>
+          <p><strong>Longitude:</strong> {selectedTask.location.longitude}</p>
+          <p><strong>Description:</strong> {selectedTask.description}</p>
+        </div>
+      </InfoWindow>
     )}
   </GoogleMap>
 </LoadScript>
