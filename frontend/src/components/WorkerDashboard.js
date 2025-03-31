@@ -118,6 +118,7 @@ function WorkerDashboard() {
         tasks.map((task) => (
           <div key={task._id} className="task-card">
             <p><strong>Description:</strong> {task.description}</p>
+            <p><strong>📍 Address:</strong> {task.address || "Address not available"}</p>
             <p><strong>📍 Location:</strong> {task.location?.latitude}, {task.location?.longitude}</p>
 
             {/* ❌ MiniMap Removed */}
@@ -167,6 +168,11 @@ function WorkerDashboard() {
             {completedTasks.map(task => (
               <tr key={task._id}>
                 <td>{task.description}</td>
+                <td>
+                  {task.address?.formatted || "Address not available"}
+                  <br />
+                  ({task.location?.latitude}, {task.location?.longitude})
+                </td>
                 <td>
                   {/* ❌ MiniMap Removed */}
                   {/* {task.location?.latitude && task.location?.longitude ? (

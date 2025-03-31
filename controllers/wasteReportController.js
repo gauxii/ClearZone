@@ -113,7 +113,9 @@ exports.getWasteReportsByWorkerId = async (req, res) => {
         }
 
         // ✅ Find all waste reports assigned to the given workerId
-        const wasteReports = await WasteReport.find({ assigned: workerId });
+        const wasteReports = await WasteReport.find({ assigned: workerId }).select(
+            "description imageUrl location address status"
+        );;
 
         if (!wasteReports.length) {
             return res.status(404).json({ success: false, error: "No waste reports found for this worker" });
