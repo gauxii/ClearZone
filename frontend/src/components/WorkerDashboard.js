@@ -1,8 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import "./WorkerDashboard.css";
 // import MiniMap from "./MiniMap"; // ❌ Temporarily Commented Out
+
+const mapContainerStyle = {
+  width: "100%",
+  height: "400px",
+};
+const defaultCenter = { lat: 37.7749, lng: -122.4194 }; // Default to San Francisco
 
 function WorkerDashboard() {
   const [tasks, setTasks] = useState([]);
@@ -11,7 +18,18 @@ function WorkerDashboard() {
   const [workerId, setWorkerId] = useState("");
   const [uploadingTaskId, setUploadingTaskId] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [mapCenter, setMapCenter] = useState(defaultCenter);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (tasks.length > 0) {
+      const firstTask = tasks.find(task => task.location?.latitude && task.location?.longitude);
+      if (firstTask) {
+        setMapCenter({ lat: firstTask.location.latitude, lng: firstTask.location.longitude });
+      }
+    }
+  }, [tasks]); // 🔥 Re-run this effect when `tasks` change
+  
 
   useEffect(() => {
     const savedWorkerName = localStorage.getItem("name");
@@ -151,7 +169,20 @@ function WorkerDashboard() {
       ) : (
         <p>No tasks assigned yet.</p>
       )}
-
+      {/* ✅ Google Map with Dynamic Centering */}
+      <LoadScript googleMapsApiKey="AIzaSyAN_dWYJZn5_bFQx7huMdod7z0gsefFi4Y">
+  <GoogleMap mapContainerStyle={mapContainerStyle} center={mapCenter} zoom={12}>
+    {tasks.map((task) =>
+      task.location?.latitude && task.location?.longitude ? (
+        <Marker
+          key={task._id}
+          position={{ lat: task.location.latitude, lng: task.location.longitude }}
+          title={task.description}
+        />
+      ) : null
+    )}
+  </GoogleMap>
+</LoadScript>
       {/* ✅ Completed Tasks Table */}
       <h3>Completed Tasks</h3>
       {completedTasks.length > 0 ? (
@@ -169,7 +200,7 @@ function WorkerDashboard() {
               <tr key={task._id}>
                 <td>{task.description}</td>
                 <td>
-                  {task.address?.formatted || "Address not available"}
+                  {task.address|| "Address not available"}
                   <br />
                   ({task.location?.latitude}, {task.location?.longitude})
                 </td>
