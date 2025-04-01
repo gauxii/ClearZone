@@ -22,7 +22,9 @@
   background: rgba(0, 0, 0, 0.7); /* Darker overlay */
   z-index: 1;
 }
-
+.login-link{
+  color: white;
+}
 /* Glassmorphic card design with animated glowing border */
 .signup-box {
   position: relative;

@@ -100,16 +100,21 @@ function LoginPage() {
           {errorMessage && <div className="error-message">{errorMessage}</div>}
 
           {/* Buttons (Login + Sign Up) */}
-          <div className="button-group">
-            <button type="submit" className="login-button">Login</button>
-            <button 
-              type="button" 
-              className="signup-button" 
-              onClick={() => navigate("/signup")}  
-            >
-              Sign Up
-            </button>
-          </div>
+          {/* Buttons (Login + Sign Up) */}
+<div className="button-group">
+  <button type="submit" className="login-button">Login</button>
+
+  {/* Conditionally render the Sign Up button */}
+  {role !== "admin" && (
+    <button 
+      type="button" 
+      className="signup-button" 
+      onClick={() => navigate("/signup")}  
+    >
+      Sign Up
+    </button>
+  )}
+</div>
         </form>
       </div>
     </div>
