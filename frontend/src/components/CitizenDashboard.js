@@ -19,6 +19,7 @@ function CitizenDashboard() {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showFeedbackPopup, setShowFeedbackPopup] = useState(false);
 const [reportToFeedback, setReportToFeedback] = useState(null);
+const [selectedFile, setSelectedFile] = useState(null);
 
   const videoRef = useRef(null);
   const submissionsRef = useRef(null);
@@ -150,21 +151,36 @@ const fetchRewardPoints = async () => {
     }
     return new Blob([new Uint8Array(byteArrays)], { type: mimeType });
   };
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setSelectedFile(file);  // ✅ Fix: Set selectedFile instead of image
+    }
+  };
   // ✅ Submit Waste Report & Show Reward Popup
   const submitReport = async () => {
-    if (!image || !description || !location) {
-      alert("Please capture an image, enter a description, and allow location access.");
+    if ((!image && !selectedFile) || !description || !location) {
+      alert("Please capture/select an image, enter a description, and allow location access.");
       return;
     }
-    const blob = base64ToBlob(image, "image/png");
-    const file = new File([blob], "waste.png", { type: "image/png" });
+  
     const formData = new FormData();
-    formData.append("image", file);
+  
+    if (selectedFile) {
+      // If user selects an image from files, upload it directly
+      formData.append("image", selectedFile);
+    } else if (image) {
+      // If user captures an image, convert base64 to file and then upload
+      const blob = base64ToBlob(image, "image/png");
+      const file = new File([blob], "waste.png", { type: "image/png" });
+      formData.append("image", file);
+    }
+  
     formData.append("description", description);
     formData.append("latitude", location.latitude);
     formData.append("longitude", location.longitude);
     formData.append("address", location.address || "Address not available");
-
+  
     try {
       await axios.post("http://localhost:5002/api/waste/report", formData, {
         headers: {
@@ -172,14 +188,15 @@ const fetchRewardPoints = async () => {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-
+  
       alert("✅ Waste reported successfully!");
       setImage(null);
+      setSelectedFile(null); // Reset the selected file
       setDescription("");
       fetchReports();
       fetchRewardPoints();
       fetchLeaderboard();
-
+  
       setShowPopup(true);
       setTimeout(() => {
         setShowPopup(false);
@@ -282,6 +299,17 @@ const toggleLeaderboard = async () => {
     <video ref={videoRef} autoPlay playsInline className="video-feed" />
     <button onClick={captureImage}>Capture Image</button>
   </div>
+  {/* Upload Image Section */}
+  <div className="upload-section">
+    <input type="file" accept="image/*" onChange={handleFileUpload} />
+    {selectedFile && (
+      <div>
+        <p>Selected File: {selectedFile.name}</p>
+        <img src={URL.createObjectURL(selectedFile)} alt="Selected Waste" className="image-preview" />
+      </div>
+    )}
+  </div>
+
   {image && <img src={image} alt="Captured Waste" className="image-preview" />}
   <button className="submit-btn" onClick={submitReport}>Submit Waste Report</button>
 </div>
